@@ -30,3 +30,9 @@ Book.getBook = function(schemaName, id) {
   debug('get Book');
   return storage.getBook('book', id);
 };
+
+Book.deleteBook = function(schemaName, id) {
+  debug('delete Book');
+  storage.deleteBook('book', id);
+};
+

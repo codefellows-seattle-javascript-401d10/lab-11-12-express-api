@@ -29,6 +29,12 @@ app.get('/api/book', function(req, res, next){
     .catch (err => next(err));
 });
 
+app.delete('/api/book', function(req, res, next) {
+  debug('hit route DELETE /api/book');
+  Book.deleteBook('book', req.query.id)
+  .then(() => debug('deleted Book'))
+  .catch(err => next(err));
+});
 
 app.use(function(err, req, res, next) {
   console.error(err.message);

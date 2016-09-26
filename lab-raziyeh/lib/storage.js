@@ -37,13 +37,14 @@ exports.getBook = function(schemaName, id){
     .catch(err => Promise.reject(createError(404, err.message)));
 };
 
-exports.deleteItem = function(schemaName, id){
+exports.deleteBook = function(schemaName, id){
   if(!schemaName) return Promise.reject(createError(400,'expected schemaName'));
   if(!id) return Promise.reject(createError(400,'expected id'));
 
   return del(`${__dirname}/../data/${schemaName}/${id}.json`)
-    .then( path => {
-      path.join('\n');
-      console.log('the file named ' , path ,'deleted');
-    }).catch (err => Promise.reject(err));
+    .then( book => {
+      book.join('\n');
+      debug('the file named ' , book ,'deleted');
+    })
+    .catch (err => Promise.reject(createError(404, err.message)));
 };
