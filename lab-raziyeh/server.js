@@ -1,44 +1,48 @@
 'use strict';
 
-// npm modules
 const morgan = require('morgan');
 const express = require('express');
-//const Router = express.Router;
+
 const createError = require('http-errors');
 const jsonParser = require('body-parser').json();
-const debug = require('debug')('note:server');
-// app modules
+const debug = require('debug')('book:server');
 
-// app modules
 const Book = require('./model/book.js');
-//const storage = require('./lib/storage.js');
 
-//module constants
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(morgan('dev'));
 
 app.post('/api/book', jsonParser, function(req, res, next){
-  debug('hit route POST / api/note');
+  debug('hit route POST / api/book');
   Book.createBook(req.body)
-   .then(note => res.json(note))
+   .then(book => res.json(book))
    .catch(err => next(err));
 });
 
+app.get('/api/book', function(req, res, next){
+  debug('hit route GET / api/book');
+  console.log('id ',req.query.id);
+  Book.getBook('book', req.query.id)
+    .then( book => res.json(book))
+    .catch (err => next(err));
+});
 
-app.use(function(err, req, res) {
+
+app.use(function(err, req, res, next) {
   console.error(err.message);
   if(err.status) {
     res.status(err.status).send(err.name);
+    next();
     return;
   }
 
   err = createError(500, err.message);
- // res.status(err.status).send(err.name);
+  res.status(err.status).send(err.name);
+  next();
 });
 
-// in terminal --> DEBUG ='note*' node server.js
 app.listen(PORT, function() {
-  debug(`server up ${PORT}`);
+  debug(`server up on Port:: ${PORT}`);
 });

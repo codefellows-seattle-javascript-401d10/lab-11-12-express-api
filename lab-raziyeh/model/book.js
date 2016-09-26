@@ -2,7 +2,7 @@
 const uuid = require('node-uuid');
 const createError = require('http-errors');
 const storage = require('../lib/storage.js');
-const debug = require('debug')('note:server');
+const debug = require('debug')('book:server');
 
 const Book = module.exports = function(title, author, page) {
   if(!title) throw(createError(400, 'expected Book title'));
@@ -24,4 +24,9 @@ Book.createBook = function(data) {
   } catch (error) {
     return Promise.reject(error);
   }
+};
+
+Book.getBook = function(schemaName, id) {
+  debug('get Book');
+  return storage.getBook('book', id);
 };
