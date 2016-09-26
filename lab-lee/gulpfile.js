@@ -16,7 +16,7 @@ gulp.task('test', function() {
   .pipe(mocha({reporter:'landing'}));
 });
 
-gulp.task('default', ['test']);
+gulp.task('default', ['test', 'lint']);
 
 gulp.task('dev', function() {
   gulp.watch(['**/*.js', '!node_modules/**'],
