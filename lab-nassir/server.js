@@ -50,4 +50,5 @@ app.use(function(err, req, res, next) {
 
 app.listen(PORT, function() {
   debug('Server is up and listening on PORT' + PORT);
+  console.log('Server is up and listening on PORT' + PORT);
 });
