@@ -30,6 +30,12 @@ app.post('/api/cat', jsonParser, function(req, res, next) {
   .catch(err => next(err));
 });
 
+app.delete('/api/cat', function(req, res, next) {
+  debug('Hit route DELETE /api/cat');
+  Cat.deleteCat(req.query.id)
+  .catch(err => next(err));
+});
+
 app.use(function(err, req, res, next) {
   debug('Hit error middleware');
   console.error(err.message);

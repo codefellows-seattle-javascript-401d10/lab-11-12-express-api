@@ -15,7 +15,7 @@ const Cat = module.exports = function(name, breed){
 };
 
 Cat.createCat = function(_cat) {
-  debug('Hit createCat');
+  debug('Hit Cat.createCat');
   try {
     let cat = new Cat(_cat.name, _cat.breed);
     return storage.createItem('cat', cat);
@@ -25,6 +25,11 @@ Cat.createCat = function(_cat) {
 };
 
 Cat.fetchCat = function(id) {
-  debug('Hit fetchCat');
+  debug('Hit Cat.fetchCat');
   return storage.fetchItem('cat', id);
+};
+
+Cat.deleteCat = function(id) {
+  debug('Hit Cat.deleteCat');
+  return storage.deleteItem('cat', id);
 };
