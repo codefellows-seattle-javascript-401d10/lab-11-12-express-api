@@ -31,3 +31,8 @@ Duck.fetchDuck = function(id) {
   debug('fetchDuck');
   return storage.fetchItem('duck', id);
 };
+
+Duck.deleteDuck = function(id) {
+  debug('deleteDuck');
+  return storage.deleteItem('duck', id);
+};

@@ -36,6 +36,12 @@ app.post('/api/duck', jsonParser, function(req, res, next) {
   .catch(err => next(err));
 });
 
+app.delete('/api/note', function(req, res, next) {
+  debug('hit route DELETE /api/duck');
+  Duck.deleteDuck(req.query.id)
+  .then
+})
+
 app.use(function(err, req, res) {
   debug('error middleware');
   console.error(err.message);
