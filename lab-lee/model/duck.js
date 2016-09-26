@@ -26,3 +26,8 @@ Duck.createDuck = function(_duck) {
     return Promise.reject(err);
   }
 };
+
+Duck.fetchDuck = function(id) {
+  debug('fetchDuck');
+  return storage.fetchItem('duck', id);
+};
