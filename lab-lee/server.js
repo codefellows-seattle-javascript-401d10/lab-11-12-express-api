@@ -8,7 +8,7 @@ const debug = require('debug')('note:server');
 const jsonParser = require('body-parser').json();
 
 // app modules
-const Mutant = require('./model/mutant');
+const Duck = require('./model/duck');
 // const storage = require('./lib/storage');
 
 // module constants
@@ -22,17 +22,17 @@ app.get('/hello', function(req, res, next) {
   next();
 });
 
-app.get('/api/mutant', function(req, res, next) {
-  debug('hit route GET /api/mutant');
-  Mutant.fetchMutant(req.query.id)
-  .then( mutant => res.join(mutant))
+app.get('/api/duck', function(req, res, next) {
+  debug('hit route GET /api/duck');
+  Duck.fetchDuck(req.query.id)
+  .then( duck => res.join(duck))
   .catch (err => next(err));
 });
 
-app.post('/api/mutant', jsonParser, function(req, res, next) {
-  debug('hit route POST /api/mutant');
-  Mutant.createMutant(req.body)
-  .then(mutant => res.json(mutant))
+app.post('/api/duck', jsonParser, function(req, res, next) {
+  debug('hit route POST /api/duck');
+  Duck.createDuck(req.body)
+  .then(duck => res.json(duck))
   .catch(err => next(err));
 });
 
