@@ -33,3 +33,10 @@ Cat.deleteCat = function(id) {
   debug('Hit Cat.deleteCat');
   return storage.deleteItem('cat', id);
 };
+
+Cat.updateCat = function(req) {
+  debug('Hit Cat.updateCat');
+  let newCat = new Cat(req.body.name, req.body.breed);
+  newCat.id = req.query.id;
+  return storage.createItem('cat', newCat);
+};

@@ -6,8 +6,13 @@ const expect = require('chai').expect;
 require('../server');
 
 describe('Testing cat routes', function() {
-  var cat = null;
-
+  beforeEach(function(){
+    let cat = {
+      id: 1234;
+      name: 'Moggy';
+      breed: 'Shorthair';
+    }
+  });
   describe('Testing POST /api/cat', function() {
     it('Should return a cat', function(done) {
       request.post('localhost:3000/api/cat')

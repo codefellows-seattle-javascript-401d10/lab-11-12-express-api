@@ -30,6 +30,13 @@ app.post('/api/cat', jsonParser, function(req, res, next) {
   .catch(err => next(err));
 });
 
+app.put('/api/cat', jsonParser, function(req, res, next) {
+  debug('Hit route PUT /api/cat');
+  Cat.updateCat(req)
+  .then(cat => res.json(cat))
+  .catch(err => next(err));
+});
+
 app.delete('/api/cat', function(req, res, next) {
   debug('Hit route DELETE /api/cat');
   Cat.deleteCat(req.query.id)
