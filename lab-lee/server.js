@@ -9,7 +9,7 @@ const jsonParser = require('body-parser').json();
 
 // app modules
 const Mutant = require('./model/mutant');
-const storage = require('./lib/storage');
+// const storage = require('./lib/storage');
 
 // module constants
 const PORT = process.env.PORT || 3000;
