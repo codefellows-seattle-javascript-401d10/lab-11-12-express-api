@@ -16,3 +16,11 @@ const Duck = module.exports = function(name, color, feathers) {
   this.feathers = feathers;
   this.id = uuid.v1();
 };
+
+Duck.createDuck = function(_duck) {
+  debug('createDuck');
+  try {
+    let duck = new Duck(_duck.name, _duck.color, _duck.feathers);
+    return storage.createItem('duck', duck)
+  }
+}
