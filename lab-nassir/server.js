@@ -16,6 +16,13 @@ app.get('/', function(req, res){
   res.json({greeting: 'Welcome to CatAPI 2.0; now 100% Express-ier'});
 });
 
+app.get('/api/cat', function(req, res, next) {
+  debug('Hit route GET /api/cat');
+  Cat.fetchCat(req.query.id)
+  .then(cat => res.json(cat))
+  .catch(err => next(err));
+});
+
 app.post('/api/cat', jsonParser, function(req, res, next) {
   debug('Hit route POST /api/cat');
   Cat.createCat(req.body)
@@ -33,4 +40,8 @@ app.use(function(err, req, res, next) {
   }
   err = createError(500, err.message);
   res.status(err.status).send(err.name);
+});
+
+app.listen(PORT, function() {
+  debug('Server is up and listening on PORT' + PORT);
 });

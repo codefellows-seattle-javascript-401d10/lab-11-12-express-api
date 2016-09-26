@@ -23,3 +23,8 @@ Cat.createCat = function(_cat) {
     return Promise.reject(err);
   }
 };
+
+Cat.fetchCat = function(id) {
+  debug('Hit fetchCat');
+  return storage.fetchItem('cat', id);
+};
