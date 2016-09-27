@@ -68,6 +68,13 @@ exports.fetchItem = function(schemaName, id) {
   .catch(err => Promise.reject(createError(404, err.message)));
 };
 
+exports.fetchAll = function(schemaName) {
+  debug('fetchItem');
+  if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
+  var stuff = fs.readdirSync(`${__dirname}/../data/${schemaName}`);
+  return fs.readdirProm(`${__dirname}/../data/${schemaName}`);
+};
+
 exports.deleteItem = function(schemaName, id) {
   if (!schemaName) return Promise.reject(createError(400, 'expected a schemaName'));
   if (!id) return Promise.reject(createError(400, 'expected an id'));
