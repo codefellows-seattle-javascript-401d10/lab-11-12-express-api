@@ -18,10 +18,8 @@ const Vehicle = module.exports = function(type, brand, rimSize, topSpeed){
 
 Vehicle.createVehicle = function(_vehicle) {
   debug('createVehicle');
-  console.log(_vehicle);
   try {
     let vehicle = new Vehicle(_vehicle.type, _vehicle.brand, _vehicle.rimSize, _vehicle.topSpeed);
-    console.log('storing item...');
     return storage.createItem('vehicle', vehicle);
   } catch (err) {
     return Promise.reject(err);
@@ -30,5 +28,26 @@ Vehicle.createVehicle = function(_vehicle) {
 
 Vehicle.fetchVehicle = function(id){
   debug('fetchVehicle');
-  return storage.fetchItem('vehicle', id);
+  try {
+    return storage.fetchItem('vehicle', id);
+  } catch (err) {
+    return storage.availIDs('vehicle');
+  }
+};
+
+Vehicle.modifyVehicle = function(id, _vehicle){
+  debug('modifyVehicle');
+  if (!id) return Vehicle.createVehicle(_vehicle);
+  try {
+    let vehicle = new Vehicle(_vehicle.type, _vehicle.brand, _vehicle.rimSize, _vehicle.topSpeed);
+    vehicle.id = id;
+    return storage.createItem('vehicle', vehicle);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+Vehicle.deleteVehicle = function(id){
+  debug('deleteVehicle');
+  return storage.deleteItem('vehicle', id);
 };

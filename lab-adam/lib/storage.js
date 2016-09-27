@@ -13,7 +13,6 @@ exports.createItem = function(schemaName, item){
   debug('storing item');
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!item) return Promise.reject(createError(400, 'expected item'));
-  console.log('storing item');
   let json = JSON.stringify(item);
   let path = `${__dirname}/../data/${schemaName}`;
   return fs.accessProm(path)
@@ -30,7 +29,9 @@ exports.createItem = function(schemaName, item){
 exports.fetchItem = function(schemaName, id){
   debug('fetchItem');
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
-  if (!id) return Promise.reject(createError(400, 'expected item'));
+  if (!id) {
+    return Promise.reject(createError(400, 'expected item ID'));
+  }
   return fs.readFileProm(`${__dirname}/../data/${schemaName}/${id}.json`)
   .then(data => {
     try {
@@ -52,5 +53,5 @@ exports.deleteItem = function(schemaName, id){
 };
 
 exports.availIDs = function(schemaName) {
-  return fs.readdirProm(`${__dirname}/../data/${schemaName}`);
+  return fs.readdirProm(`${__dirname}/../data/${schemaName}`)
 };
