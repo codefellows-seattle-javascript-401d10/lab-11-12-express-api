@@ -31,8 +31,9 @@ bookRouter.get('/api/book/', function(req, res, next){
 
 bookRouter.delete('/api/book/:id', function(req, res, next) {
   debug('hit route DELETE /api/book');
-  Book.deleteItem('book', req.params.id);
-  next();
+  Book.deleteItem('book', req.params.id)
+  .then(() => res.sendStatus(204))
+  .catch(err => next(err));
 });
 
 bookRouter.put('/api/book/:id',jsonParser, function(req,res, next) {

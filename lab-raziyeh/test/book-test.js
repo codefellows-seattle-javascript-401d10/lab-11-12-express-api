@@ -117,7 +117,6 @@ describe('testing Book Routes', function(){
   });
 
   describe('Testing PUT requests to api/book', function(){
-  // PUT - test 200, response body like {<data>} for a post request with a valid body
     describe('valid id and body', function() {
       before( done => {
         Book.createItem(exampleBook)
@@ -151,7 +150,6 @@ describe('testing Book Routes', function(){
         });
       });
     });
-  // PUT - test 400, responds with 'bad request' for if no body provided or invalid body
     describe('Expecting bad request - PUT', function(){
       it('expecting respond with bad request - PUT', function(done){
         request.put(`${url}/api/book?id=${tempBook.id}`)
@@ -161,6 +159,26 @@ describe('testing Book Routes', function(){
           done();
         });
       });
+    });
+  });
+
+  //DELETE - test 204, with an empty response body for DELETE request with a valid id
+  describe('Testing DELETE requests to api/book', function() {
+    before(done => {
+      Book.createItem(exampleBook)
+          .then( book => {
+            this.tempBook = book;
+            done();
+          })
+          .catch(err => done(err));
+    });
+    it('expecting to delete a book with id provided', (done) => {
+      request.delete(`${url}/api/book/${this.tempBook.id}`)
+       .end((err, res) => {
+         expect(res.status).to.equal(204);
+         //expect(res.err).to.not.null;
+         done();
+       });
     });
   });
 });
