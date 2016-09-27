@@ -35,17 +35,25 @@ Duck.fetchDuck = function(id) {
   return storage.fetchItem('duck', id);
 };
 
+Duck.fetchDuckIDs = function(){
+  debug('fetchDuckIDs');
+  return storage.fetchAll('duck');
+};
+
 Duck.deleteDuck = function(id) {
   debug('deleteDuck');
   return storage.deleteItem('duck', id);
 };
 
-Duck.putDuck = function(_duck) {
-  debug('putDuck');
-  try {
-    let duck = new Duck(_duck.name, _duck.color, _duck.feathers, _duck.id);
-    return storage.putItem('duck', duck);
-  } catch (err) {
-    return Promise.reject(err);
-  }
+Duck.updateDuck = function(id, _duck) {
+  debug('updateDuck');
+  return storage.fetchItem('duck', id)
+  .catch( err => Promise.reject(createError(404, err.message)))
+  .then( duck => {
+    for (var key in duck) {
+      if (key === 'id') continue;
+      if (_duck[key]) duck[key] = _duck[key];
+    }
+    return storage.createItem('duck', duck);
+  });
 };
