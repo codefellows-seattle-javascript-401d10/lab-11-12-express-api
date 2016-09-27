@@ -3,10 +3,10 @@
 const createError = require('http-errors');
 const debug = require('debug')('portfolio:error-middleware');
 
-module.exports = (function(err, req, res, next){
-  debug();
+module.exports = function(err, req, res, next){
   console.error(err.message);
   if (err.status) {
+    debug('user-error');
     res.status(err.status).send(err.name);
     next();
     return;
@@ -14,4 +14,4 @@ module.exports = (function(err, req, res, next){
   err = createError(500, err.message);
   res.status(err.status).send(err.name);
   next();
-});
+};

@@ -14,10 +14,13 @@ const Portfolio = module.exports = function(about, projects, work) {
   this.about = about;
   this.projects = projects;
   this.work = work;
+  debug('about', this.about);
+  debug('projects', this.projects);
 };
 
 Portfolio.createPortfolio = function(_portfolio) {
   debug('createPortfolio');
+  debug(_portfolio);
   try {
     let portfolio = new Portfolio(_portfolio.about, _portfolio.projects, _portfolio.work);
     return storage.createPortfolio('portfolio', portfolio);
@@ -34,7 +37,7 @@ Portfolio.fetchPortfolio = function(id){
 Portfolio.updatePortfolio = function(id, _portfolio){
   debug('updatePortfolio');
   return storage.fetchPortfolio('portfolio', id)
-  .catch(err => Promise.reject(createError(404, 'portfolio not found')))
+  .catch(err => Promise.reject(createError(404, err.message)))
   .then(portfolio => {
     for (var key in portfolio) {
       if(key === 'id') continue; //don't try and replace id

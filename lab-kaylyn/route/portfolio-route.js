@@ -4,7 +4,7 @@ const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
 const debug = require('debug')('portfolio:portfolioRouter');
 const Portfolio = require('../model/portfolio.js');
-const portfolioRouter = new Portfolio();
+const portfolioRouter = new Router();
 
 portfolioRouter.post('/api/portfolio', jsonParser, function(req, res, next){
   debug('hit route /api/portfolio');
@@ -19,7 +19,6 @@ portfolioRouter.get('/api/portfolio/:id', function(req, res, next){
   Portfolio.fetchPortfolio(req.params.id)
   .then( portfolio => res.json(portfolio))
   .catch( err => next(err));
-  next();
 });
 
 portfolioRouter.delete('/api/portfolio', function(req, res, next){
@@ -27,14 +26,13 @@ portfolioRouter.delete('/api/portfolio', function(req, res, next){
   Portfolio.deletePortfolio('portfolio', req.query.id)
   .then( () => debug('portfolio deleted'))
   .catch( err => next(err));
-  next();
 });
 
 portfolioRouter.put('/api/portfolio', jsonParser, function(req, res, next){
   debug('hit route PUT /api/porfolio');
-  Portfolio.updatePortfolio(req.query.id, req.body)
+  Portfolio.updatePortfolio(req.params.id, req.body)
   .then( portfolio => res.json(portfolio))
-  .catch(err => next(err))
+  .catch(next);
 });
 
-module.exports = portfolioRouter();
+module.exports = portfolioRouter;

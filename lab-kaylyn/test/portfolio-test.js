@@ -3,9 +3,10 @@
 const request = require('superagent');
 const expect = require('chai').expect;
 const uuid = require('node-uuid');
-const storage = require('../lib/storage');
 const Portfolio = require('../model/portfolio.js');
 const URL = 'http://localhost:3000';
+
+require('../server.js');
 
 const examplePortfolio = {
   about: 'I',
@@ -46,15 +47,14 @@ describe('testing note route', function(){
       it('should return 404 response', done => {
         request.get(`${URL}/api/portfolio/666`)
         .end((err,res) => {
-          if(err) return done(err);
           expect(res.status).to.equal(404);
           done();
         });
       });
     });
-    describe('with no id', function(){
-
-    });
+    // describe('with no id', function(){
+    //
+    // });
   });
   describe('testing POST /api/portfolio', function(){
     describe('with a valid body', function(){
@@ -76,6 +76,39 @@ describe('testing note route', function(){
           expect(res.body.projects).to.equal(examplePortfolio.projects);
           expect(res.body.work).to.equal(examplePortfolio.work);
           this.tempPortfolio = res.body;
+          done();
+        });
+      });
+    });
+  });
+  describe('testing PUT requests to  /api/portfolio', function(){
+    describe('valid id and body', function(){
+      before( done => {
+        Portfolio.createPortfolio(examplePortfolio)
+        .then( portfolio => {
+          this.tempPortfolio = portfolio;
+          done();
+        })
+        .catch(err => done(err));
+      });
+      after( done => {
+        if(this.tempPortfolio){
+          Portfolio.deletePortfolio(this.tempPortfolio.id)
+          .then(() => done())
+          .catch(done);
+        }
+      });
+      it('should return a note', done => {
+        let updateData = {about: 'update', projects: 'updated', work: 'also updated'};
+        request.put(`${URL}/api/portfolio/{this.tempPortfolio.id}`)
+        .send(updateData)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.id).to.equal(this.tempPortfolio.id);
+          expect(res.body.about).to.equal(updateData.about);
+          expect(res.body.projects).to.equal(updateData.projects);
+          expect(res.body.work).to.equal(updateData.work);
           done();
         });
       });
