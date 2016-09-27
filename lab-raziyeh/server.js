@@ -31,9 +31,14 @@ app.get('/api/book', function(req, res, next){
 
 app.delete('/api/book', function(req, res, next) {
   debug('hit route DELETE /api/book');
-  Book.deleteBook('book', req.query.id)
-  .then(() => debug('deleted Book'))
-  .catch(err => next(err));
+  Book.deleteBook('book', req.query.id);
+  next();
+});
+
+app.put('/api/book', function(req,res, next) {
+  debug('hit route PUT /api/book');
+  Book.updateBook('book', req.query.id);
+  next();
 });
 
 app.use(function(err, req, res, next) {

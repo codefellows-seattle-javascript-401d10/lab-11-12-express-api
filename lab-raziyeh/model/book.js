@@ -20,7 +20,7 @@ Book.createBook = function(data) {
   debug('create Book');
   try {
     let book = new Book(data.title, data.author, data.page);
-    return storage.createBook('book', book);
+    return storage.createItem('book', book);
   } catch (error) {
     return Promise.reject(error);
   }
@@ -28,11 +28,15 @@ Book.createBook = function(data) {
 
 Book.getBook = function(schemaName, id) {
   debug('get Book');
-  return storage.getBook('book', id);
+  return storage.getItem('book', id);
 };
 
 Book.deleteBook = function(schemaName, id) {
   debug('delete Book');
-  storage.deleteBook('book', id);
+  return storage.deleteItem('book', id);
 };
 
+Book.updateBook = function(schemaName, id) {
+  debug('update Book');
+  return storage.updateItem('book', id);
+};
