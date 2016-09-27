@@ -36,3 +36,13 @@ Duck.deleteDuck = function(id) {
   debug('deleteDuck');
   return storage.deleteItem('duck', id);
 };
+
+Duck.putDuck = function(_duck) {
+  debug('putDuck');
+  try {
+    let duck = new Duck(_duck.name, _duck.color, _duck.feathers);
+    return storage.putItem('duck', duck);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
