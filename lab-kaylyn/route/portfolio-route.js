@@ -2,12 +2,9 @@
 
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
-// const portfolioRouter = new Portfolio();
 const debug = require('debug')('portfolio:portfolioRouter');
-// const Portfolio = require('../model/portfolio.js');
-
-
-module.exports = portfolioRouter();
+const Portfolio = require('../model/portfolio.js');
+const portfolioRouter = new Portfolio();
 
 portfolioRouter.post('/api/portfolio', jsonParser, function(req, res, next){
   debug('hit route /api/portfolio');
@@ -39,3 +36,5 @@ portfolioRouter.put('/api/portfolio', jsonParser, function(req, res, next){
   .then( portfolio => res.json(portfolio))
   .catch(err => next(err))
 });
+
+module.exports = portfolioRouter();
