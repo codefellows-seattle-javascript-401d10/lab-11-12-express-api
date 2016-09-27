@@ -21,10 +21,10 @@ portfolioRouter.get('/api/portfolio/:id', function(req, res, next){
   .catch( err => next(err));
 });
 
-portfolioRouter.delete('/api/portfolio', function(req, res, next){
+portfolioRouter.delete('/api/portfolio/:id', function(req, res, next){
   debug('hit route DELETE /api/portfolio');
-  Portfolio.deletePortfolio('portfolio', req.query.id)
-  .then( () => debug('portfolio deleted'))
+  Portfolio.deletePortfolio(req.params.id)
+  .then(()=> res.status(204).send()) 
   .catch( err => next(err));
 });
 

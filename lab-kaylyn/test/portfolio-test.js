@@ -130,4 +130,29 @@ describe('testing portolio route', function(){
       });
     });
   });
+  describe('testing DELETE requests to /api/portfolio', function(){
+    describe('with valid id', function(){
+      before(done => {
+        Portfolio.createPortfolio(examplePortfolio)
+        .then(portfolio => {
+          this.tempPortfolio = portfolio;
+          done();
+        })
+        .catch(err => done(err))
+      });
+      // after(done => {
+      //   Portfolio.deletePortfolio(this.tempPortfolio.id)
+      //   .then(() => done())
+      //   .catch(err => done(err));
+      // });
+      it('should return a status code of 204 upon DELETE', done => {
+        console.log(this.tempPortfolio);
+        request.delete(`${URL}/api/portfolio/${this.tempPortfolio.id}`)
+        .end((err, res) => {
+          expect(res.status).to.equal(204);
+          done();
+        });
+      });
+    });
+  });
 });
