@@ -14,7 +14,7 @@ const examplePortfolio = {
   work: 'cats',
 };
 
-describe('testing note route', function(){
+describe('testing portolio route', function(){
   describe('testing GET requests  to /api/portfolio', function(){
     describe('with valid id', function(){
       before(done => {
@@ -65,7 +65,7 @@ describe('testing note route', function(){
           .catch(err => done(err));
         }
       });
-      it('should return a portfolio', done => {
+      it('should return an updated portfolio', done => {
         request.post(`${URL}/api/portfolio`)
         .send(examplePortfolio)
         .end((err, res) => {
@@ -77,6 +77,15 @@ describe('testing note route', function(){
           expect(res.body.work).to.equal(examplePortfolio.work);
           this.tempPortfolio = res.body;
           done();
+        });
+      });
+      describe('testing POST with invalid id', function(){
+        it('should return 404 response', done => {
+          request.post(`${URL}/api/portfolio/666`)
+          .end((err,res) => {
+            expect(res.status).to.equal(404);
+            done();
+          });
         });
       });
     });
@@ -98,17 +107,17 @@ describe('testing note route', function(){
           .catch(done);
         }
       });
-      it('should return a note', done => {
+      it('should return a portfolio', done => {
         let updateData = {about: 'update', projects: 'updated', work: 'also updated'};
-        request.put(`${URL}/api/portfolio/{this.tempPortfolio.id}`)
+        request.put(`${URL}/api/portfolio/${this.tempPortfolio.id}`)
         .send(updateData)
         .end((err, res) => {
           if (err) return done(err);
           expect(res.status).to.equal(200);
           expect(res.body.id).to.equal(this.tempPortfolio.id);
-          expect(res.body.about).to.equal(updateData.about);
-          expect(res.body.projects).to.equal(updateData.projects);
-          expect(res.body.work).to.equal(updateData.work);
+          for(var key in updateData) {
+            expect(res.body[key]).to.equal(updateData[key]);
+          }
           done();
         });
       });

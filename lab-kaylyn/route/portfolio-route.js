@@ -28,7 +28,7 @@ portfolioRouter.delete('/api/portfolio', function(req, res, next){
   .catch( err => next(err));
 });
 
-portfolioRouter.put('/api/portfolio', jsonParser, function(req, res, next){
+portfolioRouter.put('/api/portfolio/:id', jsonParser, function(req, res, next){
   debug('hit route PUT /api/porfolio');
   Portfolio.updatePortfolio(req.params.id, req.body)
   .then( portfolio => res.json(portfolio))
