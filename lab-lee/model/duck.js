@@ -14,7 +14,7 @@ const Duck = module.exports = function(name, color, feathers) {
   this.name = name;
   this.color = color;
   this.feathers = feathers;
-  this.id = uuid.v1();
+  this.id = uuid.v1().substring(0, 8);
 };
 
 Duck.createDuck = function(_duck) {

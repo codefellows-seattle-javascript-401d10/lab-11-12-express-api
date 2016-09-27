@@ -11,6 +11,7 @@ module.exports = exports = {};
 
 exports.createItem = function(schemaName, item) {
   debug('createItem');
+  console.log(item);
 
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!item) return Promise.reject(createError(400, 'expected an item'));
@@ -24,7 +25,8 @@ exports.createItem = function(schemaName, item) {
     return Promise.reject(err);
   })
   .then( () =>
-  fs.writeFileProm(`${__dirname}/..data/${schemaName}/${item.id}.json`, json))
+  fs.writeFileProm(`${__dirname}/../data/${schemaName}/${item.id}.json`, json)
+)
   .then( () => item)
   .catch( err => Promise.reject(createError(500, err.message)));
 };
