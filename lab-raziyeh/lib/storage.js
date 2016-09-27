@@ -47,10 +47,6 @@ exports.updateItem = function(schemaName, id, data) {
   return fs.readFileProm(`${__dirname}/../data/${schemaName}/${id}.json`)
   .then( item => {
 
-    item.page = '10000';
-    console.log('item', item);
-      // fs.writeFileProm(`${__dirname}/../data/${schemaName}/${item.id}.json`, JSON.stringify(item) );
-
   })
   .catch(err => Promise.reject(createError(404, err.message)));
 

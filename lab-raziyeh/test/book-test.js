@@ -2,30 +2,31 @@
 
 const request = require('superagent');
 const expect = require('chai').expect;
+const uuid = require('node-uuid');
 
 const storage = require('../lib/storage.js');
 
 describe('testing Book Routes', function(){
-
   describe('POST requests tests', function(){
-
-    // POST - test 200, response body like {<data>} for a post request with a valid body
     describe('testing POST /api/book', function(){
-      it('save a new Book - POST', function(done){
-        request.post('localhost:3000/api/book')
-        .send({ title: 'HTML', author: 'Raziyeh', page: '350' })
-        .end((err, res) => {
-          if (err) return done(err);
-          expect(res.status).to.equal(200);
-          expect(res.body.title).to.equal('HTML');
-          expect(res.body.author).to.equal('Raziyeh');
-          expect(res.body.page).to.equal('350');
-        });
-        done();
-      });
+      // it('expecting save a new Book - POST', function(done){
+      //   request.post('localhost:3000/api/book')
+      //   .send({ 
+      //     title: 'HTML',
+      //     author: 'Raziyeh',
+      //     page: '350',
+      //   })
+      //   .end((err, res) => {
+      //     if (err) return done(err);
+      //     expect(res.status).to.equal(200);
+      //     expect(res.body.title).to.equal('HTML');
+      //     expect(res.body.author).to.equal('Raziyeh');
+      //     expect(res.body.page).to.equal('350');
+      //   });
+      //   done();
+      // });
     });
 
-    // POST - test 400, responds with 'bad request' for if no body provided or invalid body
     describe('testing POST /api/book', function(){
       it('expecting respond with bad request - POST', function(done){
         request.post('localhost:3000/api/book')
@@ -40,7 +41,6 @@ describe('testing Book Routes', function(){
   });
 
   describe('GET requests tests', function(){
-  // GET - test 404, responds with 'not found' for unregistered url
     describe('testing GET /api/book/unregistered', function() {
       it('expectinf to return an error with unregistered route - GET', function(done){
         request.get('/api/woow')
@@ -52,15 +52,12 @@ describe('testing Book Routes', function(){
       });
     });
 
-
-    // GET - test 200, response body like {<data>} for a request made with a valid id
-    // GET - test 404, responds with 'not found' for valid request made with an id that was not found
     describe('testing GET /api/book valid and unvalid id provided in the request', function(){
       var book;
       describe('test GET book with valid id', function() {
         before(done => {
           book = {
-            id: '89e78be0-8442-11e6-ad93-1111111111',
+            id: uuid.v1(),
             title: 'JavaScript',
             author: 'Raziyeh Bazargan',
             page: '120',
@@ -71,25 +68,19 @@ describe('testing Book Routes', function(){
             .then( () =>  done())
             .catch(err => done(err));
         });
-
-        after(done => {
-          storage.deleteItem('book', book.id)
-         .then( () =>  done())
-         .catch(err => done(err));
-        });
         
-        // it('expecting to return an book with valid id - GET', function(done){
-        //   request.get(`localhost:3000/api/book?id=${book.id}`)
-        //     .end((err, res) => {
-        //       expect(res.status).to.equal(200);
-        //       expect(res.body.id).to.equal(book.id);
-        //     });
-        //   done();
-        // });
+        it('expecting to return an book with valid id - GET', function(done){
+          request.get(`localhost:3000/api/book?id=${book.id}`)
+            .end((err, res) => {
+              expect(res.status).to.equal(200);
+              expect(res.body.id).to.equal(book.id);
+            });
+          done();
+        });
       });
 
       it('expecting to return an error with unValid Id - GET', function(done){
-        request.get('localhost:3000/api/person?id=89e78be0-8442-11e6-ad93-1111111111')
+        request.get('localhost:3000/api/person?id=89e78be0-8442-11e6-ad93-000000000')
         .end((err, res) => {
           expect(res.status).to.equal(404);
           expect(res.text).to.equal('bad request');
@@ -107,7 +98,6 @@ describe('testing Book Routes', function(){
       });
     });
 
-    // GET - test 400, responds with 'bad request' if no id was provided in the request
     describe('testing GET /api/book no id provided in the request', function(){
       it('expecting to return an error with no id - GET', function(done){
         request.get('localhost:3000/api/person?id=')
