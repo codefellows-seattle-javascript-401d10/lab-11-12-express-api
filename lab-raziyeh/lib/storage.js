@@ -43,7 +43,7 @@ exports.updateItem = function(schemaName, id, data) {
   if(!schemaName) return Promise.reject(createError(400,'expected schemaName'));
   if(!data) return Promise.reject(createError(400,'expected book data'));
   if(!id) return Book.createBook(data);
-  // 
+  //
   // return fs.readFileProm(`${__dirname}/../data/${schemaName}/${id}.json`)
   // .then( item => {
   //
@@ -62,4 +62,10 @@ exports.deleteItem = function(schemaName, id){
       book.join('\n');
     })
     .catch (err => Promise.reject(createError(404, err.message)));
+};
+
+exports.availIDs = function(schemaName) {
+  return fs.readdirProm(`${__dirname}/../data/${schemaName}`)
+  .then(filenames => filenames.map(name=> name.split('.json')[0]))
+  .catch(err => Promise.reject(createError(404, err.message)));
 };

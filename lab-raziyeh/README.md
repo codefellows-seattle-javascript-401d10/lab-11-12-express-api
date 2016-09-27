@@ -1,34 +1,30 @@
 # Express-API
 =============
-Writing a REST API using Bluebird Promises.
+uses express to run POST, GET, PUT and DELETE requests.
 structures :
 
-
 - lib
-    - parse-json.js
-    - parse-url.js
     - storage.js
-    - router.js
-    - response.js : a module for define responses (JSON / TEXT) from server.
 - model
-    - person.js
+    - book.js
 - route
-    - person-route.js
+    - book-router.js
 - test
     - person-route-test.js
 - data
     - schemaName (example:person)
         - JSON files - created with POST request
-- root 
+- root
     - server.js
     - gulpfile.js
     - .gitignore
     - .eslintrc
     - README.md
+    - package.json
 
 ## Getting Started
-- In terminal enter : node server.js 
-- also you can run gulp 
+- In terminal enter : node server.js
+- also you can run gulp
 - for run tests in terminal enter:
     - gulp  OR
     - mocha
@@ -36,34 +32,37 @@ structures :
 
 ### Prerequisities
 
-- dependencies: 
+- dependencies:
 
 ```
-npm install --save node-uuid superagent bluebird mkdirp-bluebird del 
+npm install --save node-uuid superagent bluebird mkdirp-bluebird del morgan http-errors express debug body-parser
 
 ```
 
-- devDependencies: 
-  
+- devDependencies:
+
 ```
 npm install -D gulp-eslint gulp-mocha mocha gulp chai
 
 ```
 
 ## Running
-
-- In your root server, type in the command **"node server.js"** in your terminal.
+- In package.json add a new property named "start": "DEBUG='book*' node server.js", to Scripts object.
+- In your root server, type in the command **"npm run start"** in your terminal.
 - OR in terminal type: gulp
 
 
-- GET request: 
-    ```http localhost:3000/api/person?id=selectedId ```
+- GET request:
+    ```http localhost:3000/api/book?id=selectedId ```
 
-- POST request: 
-    ```echo '{"name":"yourname", "sex":"female/male"}' | http POST localhost:3000/api/person ```
+- POST request:
+    ```echo '{"title":"yourname", "author":"female/male", "page":"100"}' | http POST localhost:3000/api/book ```
 
-- DELETE request: 
-    ```http DELETE localhost:3000/api/person?id=selectedId ```
+- PUT request:
+    ```echo '{"id":"1111", "title":"yourname", "author":"female/male", "page":"100"}' | http PUT localhost:3000/api/book ```
+
+- DELETE request:
+    ```http DELETE localhost:3000/api/book?id=selectedId ```
 
 ## Testing:
 - we have 6 tests for GET and POST requests :
@@ -74,12 +73,13 @@ npm install -D gulp-eslint gulp-mocha mocha gulp chai
         - GET - test 200, response body like {<data>} for a request made with a valid id
         - POST - test 400, responds with 'bad request' for if no body provided or invalid body
         - POST - test 200, response body like {<data>} for a post request with a valid body
-        - DELETE - test 204
+        - PUT
 
 ## Built With:
 * Nodejs
+* express
 * JavaScript
-* Visual studio code 3 
+* Visual studio code 3
 
 ## Versioning
 
@@ -92,4 +92,3 @@ We use [SemVer](http://semver.org/) for versioning.
 ## License
 
 This project is licensed under the ISC License.
-
