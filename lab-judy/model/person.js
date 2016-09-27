@@ -38,6 +38,7 @@ Person.deletePerson = function(id){
 Person.updatePerson = function(id, person) {
   debug('updatePerson');
   if (!id) return Person.createPerson(person);
+  if (!person) return Promise.reject(createError(400, 'bad request'));
   return storage.fetchItem('person', id)
   .then( ()=> {
     person.id = id;

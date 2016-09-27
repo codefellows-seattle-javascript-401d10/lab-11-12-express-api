@@ -32,7 +32,7 @@ exports.fetchItem = function(schemaName, id){
       let item = JSON.parse(data.toString());
       return item;
     } catch (err) {
-      return Promise.reject(createError(500, err.mesasge));
+      return Promise.reject(createError(500, err.message));
     }
   })
   .catch(err => Promise.reject(createError(404, err.message)));
@@ -49,7 +49,7 @@ exports.deleteItem = function(schemaName, id){
     try{
       console.log('file deleted at: \n', paths);
     } catch (err) {
-      return Promise.reject(createError(500, err.mesasge));
+      return Promise.reject(createError(500, err.message));
     }
   })
   .catch (err => Promise.reject(createError(404, err.message)));
