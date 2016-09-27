@@ -1,7 +1,7 @@
 'use strict';
 
 const createError = require('http-errors');
-const debug = require('debug')('duck:server');
+const debug = require('debug')('duck:error-middleware');
 
 module.exports = function(err, req, res, next) {
   debug();
