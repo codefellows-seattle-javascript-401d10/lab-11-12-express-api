@@ -1,6 +1,9 @@
 'use strict';
 
-
+const request = require('superagent');
+const expect = require('chai').expect;
+const uuid = require('node-uuid');
+const storage = require('../lib/storage');
 const URL = 'http://localhost:3000';
 
 const examplePortfolio = {
@@ -12,23 +15,21 @@ const examplePortfolio = {
 describe('testing note route', function(){
   describe('testing GET requests  to /api/portfolio', function(){
     describe('with valid id', function(){
-      //mock note for test
       before(done => {
         Portfolio.createPortfolio(examplePortfolio)
         .then(portfolio => {
           this.tempPortfolio = portfolio;
           done();
-        }
+        })
         .catch(err => done(err))
       });
-      //clean up the mock note
       after(done => {
         Portfolio.deletePortfolio(this.tempPortfolio.id)
         .then(() => done())
         .catch(err => done(err));
       });
       it('should return a portfolio', done => {
-        request.get(`${URL}/api/portfolio?=${this.tempPortfolio.id}`);
+        request.get(`${URL}/api/portfolio/${this.tempPortfolio.id}`);
         .end((err,res) => {
           if(err) return done(err);
           expect(res.status).to.equal(200);
