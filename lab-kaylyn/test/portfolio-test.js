@@ -140,17 +140,25 @@ describe('testing portolio route', function(){
         })
         .catch(err => done(err))
       });
-      // after(done => {
-      //   Portfolio.deletePortfolio(this.tempPortfolio.id)
-      //   .then(() => done())
-      //   .catch(err => done(err));
-      // });
+      after(done => {
+        Portfolio.deletePortfolio(this.tempPortfolio.id)
+        .then(() => done())
+        .catch(err => done(err));
+      });
       it('should return a status code of 204 upon DELETE', done => {
-        console.log(this.tempPortfolio);
         request.delete(`${URL}/api/portfolio/${this.tempPortfolio.id}`)
         .end((err, res) => {
           expect(res.status).to.equal(204);
           done();
+        });
+      });
+      describe('testing DELETE requests without id', function(){
+        it('should return a status code of 404 for no id', done => {
+          request.delete(`${URL}/api/portfolio/`)
+          .end((err, res) => {
+            expect(res.status).to.equal(404);
+            done();
+          });
         });
       });
     });
