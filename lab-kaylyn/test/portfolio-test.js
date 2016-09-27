@@ -44,7 +44,7 @@ describe('testing portolio route', function(){
       });
     });
     describe('with invalid id', function(){
-      it('should return 404 response', done => {
+      it('should return 404 response for invalid GET', done => {
         request.get(`${URL}/api/portfolio/666`)
         .end((err,res) => {
           expect(res.status).to.equal(404);
@@ -52,9 +52,6 @@ describe('testing portolio route', function(){
         });
       });
     });
-    // describe('with no id', function(){
-    //
-    // });
   });
   describe('testing POST /api/portfolio', function(){
     describe('with a valid body', function(){
@@ -80,7 +77,7 @@ describe('testing portolio route', function(){
         });
       });
       describe('testing POST with invalid id', function(){
-        it('should return 404 response', done => {
+        it('should return 404 response for invalid POST', done => {
           request.post(`${URL}/api/portfolio/666`)
           .end((err,res) => {
             expect(res.status).to.equal(404);
@@ -107,7 +104,7 @@ describe('testing portolio route', function(){
           .catch(done);
         }
       });
-      it('should return a portfolio', done => {
+      it('should return an updated portfolio via PUT', done => {
         let updateData = {about: 'update', projects: 'updated', work: 'also updated'};
         request.put(`${URL}/api/portfolio/${this.tempPortfolio.id}`)
         .send(updateData)
