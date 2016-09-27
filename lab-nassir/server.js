@@ -40,6 +40,7 @@ app.put('/api/cat', jsonParser, function(req, res, next) {
 app.delete('/api/cat', function(req, res, next) {
   debug('Hit route DELETE /api/cat');
   Cat.deleteCat(req.query.id)
+  .then(cat => res.json(cat))
   .catch(err => next(err));
 });
 
