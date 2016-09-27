@@ -171,7 +171,7 @@ describe('testing person routes', function(){
       .catch(err => done(err));
     });
     it('should return 400 with bad post request for invalid body provided', done =>{
-      request.post(`${url}/api/person`)
+      request.post(`${url}/api/person?id=${this.tempPerson.id}`)
       .set('Content-Type','application/json')
       .send('invalid body')
       .end((err, res) => {
