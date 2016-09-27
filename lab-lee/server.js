@@ -36,10 +36,18 @@ app.post('/api/duck', jsonParser, function(req, res, next) {
   .catch(err => next(err));
 });
 
+
 app.delete('/api/duck', function(req, res, next) {
   debug('hit route DELETE /api/duck');
   Duck.deleteDuck(req.query.id)
   .then( duck => res.json(duck))
+  .catch(err => next(err));
+});
+
+app.put('/api/duck', jsonParser, function(req, res, next) {
+  debug('hit route PUT /api/duck');
+  Duck.putDuck(req.body)
+  .then(duck => res.json(duck))
   .catch(err => next(err));
 });
 
