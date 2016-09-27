@@ -4,7 +4,7 @@
 const morgan = require('morgan');
 const express = require('express');
 const createError = require('http-errors');
-const debug = require('debug')('note:server');
+const debug = require('debug')('duck:server');
 const jsonParser = require('body-parser').json();
 
 // app modules
