@@ -5,7 +5,6 @@ const debug = require('debug')('pizza:error-middleware');
 
 module.exports = function(err, req, res, next){
   debug('error middleware');
-  console.error(err.message);
 
   if(err.status) {
     debug('user error');
