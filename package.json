@@ -1,0 +1,29 @@
+{
+  "name": "lab-11-12-express-api",
+  "version": "1.0.0",
+  "description": "![cf](https://i.imgur.com/7v5ASc8.png) lab 11 single resource express api ======",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loganlsr/lab-11-12-express-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/loganlsr/lab-11-12-express-api/issues"
+  },
+  "homepage": "https://github.com/loganlsr/lab-11-12-express-api#readme",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "debug": "^2.2.0",
+    "express": "^4.14.0",
+    "http-errors": "^1.5.0",
+    "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7"
+  }
+}
