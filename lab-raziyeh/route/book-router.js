@@ -1,56 +1,44 @@
 'use strict';
 
-const morgan = require('morgan');
-const express = require('express');
-
-const createError = require('http-errors');
+const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
-const debug = require('debug')('book:server');
+const debug = require('debug')('book:book-router');
 
 const Book = require('../model/book.js');
 
-const app = express();
+const bookRouter = new Router();
 
-module.exports = function(){
-  app.use(morgan('dev'));
-
-  app.post('/api/book', jsonParser, function(req, res, next){
-    debug('hit route POST / api/book');
-    Book.createBook(req.body)
+bookRouter.post('/api/book', jsonParser, function(req, res, next){
+  debug('hit route POST / api/book');
+  Book.createBook(req.body)
      .then(book => res.json(book))
      .catch(err => next(err));
-  });
+});
 
-  app.get('/api/book', function(req, res, next){
-    debug('hit route GET / api/book');
-    console.log('id ',req.query.id);
-    Book.getBook('book', req.query.id)
+bookRouter.get('/api/book/:id', function(req, res, next){
+  debug('hit route GET / api/book:id');
+  Book.getBook('book', req.params.id)
       .then( book => res.json(book))
       .catch (err => next(err));
-  });
+});
 
-  app.delete('/api/book', function(req, res, next) {
-    debug('hit route DELETE /api/book');
-    Book.deleteBook('book', req.query.id);
-    next();
-  });
+bookRouter.get('/api/book/', function(req, res, next){
+  debug('hit route GET / api/book');
+  Book.getIDs()
+     .then( ids => res.json(ids))
+     .catch ( err => next(err));
+});
 
-  app.put('/api/book', function(req,res, next) {
-    debug('hit route PUT /api/book');
-    Book.updateBook('book', req.query.id);
-    next();
-  });
+bookRouter.delete('/api/book/:id', function(req, res, next) {
+  debug('hit route DELETE /api/book');
+  Book.deleteBook('book', req.params.id);
+  next();
+});
 
-  app.use(function(err, req, res, next) {
-    console.error(err.message);
-    if(err.status) {
-      res.status(err.status).send(err.name);
-      next();
-      return;
-    }
+bookRouter.put('/api/book/:id', function(req,res, next) {
+  debug('hit route PUT /api/book');
+  Book.updateBook('book', req.params.id);
+  next();
+});
 
-    err = createError(500, err.message);
-    res.status(err.status).send(err.name);
-    next();
-  });
-};
+module.exports = bookRouter;
