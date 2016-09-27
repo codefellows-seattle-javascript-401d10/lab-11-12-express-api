@@ -14,10 +14,10 @@ noteRouter.get('/', function(req, res, next){
   next();
 });
 
-noteRouter.get('/api/vehicle', function(req, res, next){
+noteRouter.get('/api/vehicle/:id', function(req, res, next){
   debug('hit route GET /api/vehicle');
-  if (req.query.id) {
-    Vehicle.fetchVehicle(req.query.id)
+  if (req.params.id) {
+    Vehicle.fetchVehicle(req.params.id)
     .then(vehicle => res.json(vehicle))
     .catch(err => next(err));
   } else {
@@ -26,9 +26,9 @@ noteRouter.get('/api/vehicle', function(req, res, next){
   }
 });
 
-noteRouter.put('/api/vehicle', jsonParser, function(req, res, next){
+noteRouter.put('/api/vehicle/:id', jsonParser, function(req, res, next){
   debug('hit route PUT /api/vehicle');
-  Vehicle.updateVehicle(req.query.id, req.body)
+  Vehicle.updateVehicle(req.params.id, req.body)
   .then(vehicle => res.json(vehicle))
   .catch(err => next(err));
 });
@@ -40,10 +40,10 @@ noteRouter.post('/api/vehicle', jsonParser, function(req, res, next){
   .catch(err => next(err));
 });
 
-noteRouter.delete('/api/vehicle', jsonParser, function(req, res, next){
+noteRouter.delete('/api/vehicle/:id', jsonParser, function(req, res, next){
   debug('hit route DELETE /api/vehicle');
-  Vehicle.deleteVehicle(req.query.id)
-  .then(vehicle => res.json(vehicle))
+  Vehicle.deleteVehicle(req.params.id)
+  .then(() => res.status(204).send())
   .catch(err => next(err));
 });
 

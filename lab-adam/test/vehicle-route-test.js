@@ -15,6 +15,7 @@ var vehicle = {
 
 describe ('testing vehicle routes', function(){
   var testVehicle;
+
   describe('testing GET requests to api/note', function(){
     describe('with valid id', function() {
       before(done => {
@@ -31,7 +32,7 @@ describe ('testing vehicle routes', function(){
         .catch(err => done(err));
       });
       it('should return a 200 and a note', function(done){
-        request.get(`localhost:3000/api/vehicle?id=${testVehicle.id}`)
+        request.get(`localhost:3000/api/vehicle/${testVehicle.id}`)
         .end((err, res) => {
           if (err) return done(err);
           expect(res.status).to.equal(200);
@@ -43,28 +44,11 @@ describe ('testing vehicle routes', function(){
     });
     describe('with invalid ID', function() {
       it('should return a 404 status code', function(done){
-        request.get('localhost:3000/api/vehicle?id=foobar')
+        request.get('localhost:3000/api/vehicle/foobar')
         .end((err, res) => {
           expect(res.status).to.equal(404);
           done();
         });
-      });
-    });
-    describe('with no ID', function() {
-      // COMMENTED OUT THE 400 TEST TO ALLOW FOR THE EXTRA CREDIT
-      // it('should return a 400', function(done){
-      //   request.get('localhost:3000/api/vehicle')
-      //   .end((err, res) => {
-      //     expect(res.status).to.equal(400);
-      //     done();
-      //   });
-      // });
-      it('should return an array of available IDs', function(done){
-        request.get('localhost:3000/api/vehicle')
-         .end((err, res) => {
-           expect(res.body).to.be.instanceOf(Array);
-           done();
-         });
       });
     });
   });
@@ -87,13 +71,13 @@ describe ('testing vehicle routes', function(){
       });
       it('should return a note', function(done){
         let changedVehicle = {rimSize: 19, brand:'honda', topSpeed:80};
-        request.put(`localhost:3000/api/vehicle?id=${testVehicle.id}`)
+        request.put(`localhost:3000/api/vehicle/${testVehicle.id}`)
         .send(changedVehicle)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.body.rimSize).to.equal(19);
-          expect(res.body.brand).to.equal('honda');
-          expect(res.body.topSpeed).to.equal(80);
+          expect(res.body.rimSize).to.equal(changedVehicle.rimSize);
+          expect(res.body.brand).to.equal(changedVehicle.brand);
+          expect(res.body.topSpeed).to.equal(changedVehicle.topSpeed);
           expect(res.body.id).to.equal(testVehicle.id);
           done();
         });
@@ -109,7 +93,7 @@ describe ('testing vehicle routes', function(){
         .catch(err => done(err));
       });
       it('should return a 400 for invalid body', function(done){
-        request.put(`localhost:3000/api/vehicle?id=${testVehicle.id}`)
+        request.put(`localhost:3000/api/vehicle/${testVehicle.id}`)
         .set('Content-Type','application/json')
         .send('not a json object')
         .end((err, res) => {
@@ -129,6 +113,7 @@ describe ('testing vehicle routes', function(){
           .catch(err => done(err));
         }
       });
+
       it('should return a note', done => {
         request.post('localhost:3000/api/vehicle')
         .send(vehicle)
@@ -156,28 +141,19 @@ describe ('testing vehicle routes', function(){
   });
   describe('testing DELETE /api/vehicle', function(){
     describe('with valid ID', function(){
-      it('should return a 200', function(done){
-        request.delete(`localhost:3000/api/vehicle?id=${testVehicle.id}`)
+      it('should return a 204', function(done){
+        request.delete(`localhost:3000/api/vehicle/${testVehicle.id}`)
         .end((err, res) => {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(204);
           done();
         });
       });
     });
-    describe('with invalid id', function() {
+    describe('with invalid or missing ID', function() {
       it('should return a 404', function(done){
-        request.delete('localhost:3000/api/vehicle?id=foobar')
+        request.delete('localhost:3000/api/vehicle/foobar')
         .end((err, res) => {
           expect(res.status).to.equal(404);
-          done();
-        });
-      });
-    });
-    describe('with no id', function() {
-      it('should return a 400', function(done){
-        request.delete('localhost:3000/api/vehicle')
-        .end((err, res) => {
-          expect(res.status).to.equal(400);
           done();
         });
       });

@@ -4,7 +4,6 @@ const Promise = require('bluebird');
 const createError = require('http-errors');
 const debug = require('debug')('vehicle:storage');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-
 const mkdirp = Promise.promisifyAll(require('mkdirp'));
 
 module.exports = exports = {};
