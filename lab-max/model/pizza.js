@@ -29,14 +29,17 @@ Pizza.createPizza = function(pizza){
   }
 };
 
-Pizza.updatePizza = function(id, pizza){
+Pizza.updatePizza = function(id, _pizza){
   debug('updatePizza');
-  if(!id){
-    return Pizza.createPizza(pizza);
-  }
-  pizza = new Pizza(pizza.sauce, pizza.crust, pizza.meat, pizza.cheese);
-  pizza.id = id;
-  return storage.createItem('pizza', pizza);
+  return storage.fetchItem('pizza', id)
+  .catch( err => Promise.reject(createError(404, err.message)))
+  .then( pizza => {
+    for (var key in pizza){
+      if (key === 'id') continue;
+      if (_pizza[key]) pizza[key] = _pizza[key];
+    }
+    return storage.createItem('pizza', pizza);
+  });
 };
 
 Pizza.fetchPizza = function(id){

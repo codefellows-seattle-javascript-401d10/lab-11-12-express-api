@@ -34,7 +34,7 @@ exports.fetchItem = function(schemaName, id){
       let item = JSON.parse(data.toString());
       return item;
     } catch (err) {
-      return Promise.reject(createError(500, err.message)); 
+      return Promise.reject(createError(500, err.message));
     }
   })
   .catch( err => Promise.reject(createError(404, err.message)));

@@ -163,45 +163,29 @@ describe('testing Pizza routes', function(){
           done();
         });
       });
-
-      it('should create a new pizza', function(done){
-        request.put('localhost:3000/api/pizza')
-        .send(pizza)
-        .end((err, res) => {
-          if (err) return done(err);
-          expect(res.status).to.equal(200);
-          expect(res.body.sauce).to.equal('red');
-          expect(res.body.crust).to.equal('thin');
-          expect(res.body.meat).to.equal('pepperoni');
-          expect(res.body.cheese).to.equal('cheddar');
-          done();
-        });
-      });
     });
 
     describe('testing for bad PUT request', function(){
-      var newPizza;
+      var aPizza;
 
       before( done => {
         Pizza.createPizza(pizza)
-        .then( pizza => {
-          newPizza = pizza;
-          delete newPizza.cheese;
-
+        .then(pizza => {
+          aPizza = pizza;
           done();
         })
         .catch( err => done(err));
       });
 
       after( done => {
-        newPizza.cheese = 'cheddar';
-        Pizza.deletePizza(newPizza.id);
+        Pizza.deletePizza(aPizza.id);
         done();
       });
 
-      it('should return a 400 error', function(done){
-        request.put(`localhost:3000/api/pizza?id=${newPizza.id}`)
-        .send(newPizza)
+      it('should return a 400 error for invalid body', function(done){
+        request.put(`localhost:3000/api/pizza?id=${aPizza.id}`)
+        .set('Content-Type', 'application/json')
+        .send('{')
         .end((err, res) => {
           expect(res.status).to.equal(400);
           done();

@@ -47,6 +47,7 @@ app.use(function(err, req, res, next){
 
   if(err.status) {
     res.status(err.status).send(err.name);
+    next();
     return;
   }
 
