@@ -29,6 +29,12 @@ app.get('/api/duck', function(req, res, next) {
   .catch (err => next(err));
 });
 
+app.get('/api/duck/all', function(req, res, next) {
+  debug('hit route GET /api/duck');
+  Duck.fetchAllDucks();
+  next();
+});
+
 app.post('/api/duck', jsonParser, function(req, res, next) {
   debug('hit route POST /api/duck');
   Duck.createDuck(req.body)

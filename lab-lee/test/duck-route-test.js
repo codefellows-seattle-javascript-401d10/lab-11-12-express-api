@@ -212,4 +212,36 @@ describe('testing duck routes', function() {
   //
   //   });
   // });
+
+  describe('testing GET /api/duck/all', function() {
+    let duck;
+
+    before( done => {
+      Duck.createDuck( {
+        name: 'larry',
+        color: 'blue',
+        feathers: '15',
+      })
+      .then( (_duck) => {
+        duck = _duck;
+        done();
+      })
+      .catch(err => done(err));
+    });
+
+    after( done => {
+      Duck.deleteDuck(duck.id)
+      .then(() => done())
+      .catch(err => done(err));
+    });
+    //
+    // it('should return an array', function(done) {
+    //   request.get('localhost:3000/api/duck/all')
+    //   .end((err, res) => {
+    //     // if (err) return done(err);
+    //     console.log(res.body);
+    //     done();
+    //   });
+    // });
+  });
 });
