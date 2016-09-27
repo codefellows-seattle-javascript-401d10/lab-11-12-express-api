@@ -53,5 +53,5 @@ exports.deleteItem = function(schemaName, id){
 };
 
 exports.availIDs = function(schemaName) {
-  return fs.readdirProm(`${__dirname}/../data/${schemaName}`)
+  return fs.readdirProm(`${__dirname}/../data/${schemaName}`);
 };
