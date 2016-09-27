@@ -33,7 +33,6 @@ describe('testing Book Routes', function(){
         Book.createItem(exampleBook)
           .then( book => {
             tempBook = book;
-            console.log('***********',book);
             done();
           })
           .catch(err => done(err));
@@ -45,7 +44,7 @@ describe('testing Book Routes', function(){
       });
 
       it('expecting to return an book with valid id - GET', (done) => {
-        request.get(`${url}/api/book?id=${tempBook.id}`)
+        request.get(`${url}/api/book/${tempBook.id}`)
             .end((err, res) => {
               if(err) return done(err);
               expect(res.status).to.equal(200);
@@ -59,21 +58,9 @@ describe('testing Book Routes', function(){
 
     describe('testing GET /api/book invalid id  in the request', function(){
       it('expecting to return an error with unValid Id - GET', function(done){
-        request.get(`${url}/api/book?id=1234`)
+        request.get(`${url}/api/book/01234`)
         .end((err, res) => {
           expect(res.status).to.equal(404);
-          done();
-        });
-      });
-    });
-
-    describe('testing GET /api/book no id provided in the request', function() {
-      it('expecting to return an error with no id - GET', function(done){
-        request.get(`${url}/api/book`)
-        .end((err, res) => {
-          expect(res.status).to.equal(400);
-          expect(res.text).equal('BadRequestError');
-          expect(res.err).not.be.null;
           done();
         });
       });
@@ -81,6 +68,7 @@ describe('testing Book Routes', function(){
   });
 
   describe('POST requests tests', function() {
+
     describe('testing POST with a valid body /api/book', function() {
 
       after(done => {
@@ -91,7 +79,7 @@ describe('testing Book Routes', function(){
         }
       });
 
-      it('expecting save a new Book - POST', (done) => {
+      it('expecting create a new Book - POST', (done) => {
         request.post(`${url}/api/book`)
         .send(tempBook)
         .end((err, res) => {
@@ -107,12 +95,21 @@ describe('testing Book Routes', function(){
     });
 
     describe('testing POST /api/book', function(){
+      before(done => {
+        exampleBook.title = null;
+        done();
+      });
+
+      after(done => {
+        exampleBook.title = 'JavaScript-2';
+        done();
+      });
+
       it('expecting respond with bad request - POST', function(done){
         request.post(`${url}/api/book`)
-        .send({ISBN:'445555444'})
+        .send(exampleBook)
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(res.text).to.be.equal('BadRequestError');
           done();
         });
       });
@@ -139,20 +136,20 @@ describe('testing Book Routes', function(){
         }
       });
 
-      // it('should return an book update', (done) => {
-      //   let updateData = { title: 'up date', author: 'fizzbuzz', page:'222' };
-      //   request.put(`${url}/api/book?id=${this.tempBook.id}`)
-      //  .send(updateData)
-      //  .end((err, res) => {
-      //    if (err) return done(err);
-      //    expect(res.status).to.equal(200);
-      //    expect(res.body.id).to.equal(this.tempBook.id);
-      //    for (var key in updateData) {
-      //      expect(res.body[key]).to.equal(updateData[key]);
-      //    }
-      //    done();
-      //  });
-      // });
+      it('should return an book update', (done) => {
+        let updateData = { title: 'up date', author: 'fizzbuzz', page:'222' };
+        request.put(`${url}/api/book/${this.tempBook.id}`)
+        .send(updateData)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.id).to.equal(this.tempBook.id);
+          for (var key in updateData) {
+            expect(res.body[key]).to.equal(updateData[key]);
+          }
+          done();
+        });
+      });
     });
   // PUT - test 400, responds with 'bad request' for if no body provided or invalid body
     describe('Expecting bad request - PUT', function(){

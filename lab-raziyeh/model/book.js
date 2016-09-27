@@ -37,7 +37,7 @@ Book.deleteItem = function(id) {
 };
 
 Book.updateItem = function(id, _book) {
-  debug('getBook- updateItem');
+  debug('getBook - updateItem');
   return storage.getItem('book', id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(book => {
@@ -45,7 +45,7 @@ Book.updateItem = function(id, _book) {
       if(key === 'id') continue;
       if(_book[key]) book[key] = _book[key];
     }
-    return storage.createItem(book);
+    return storage.createItem('book', book);
   });
 };
 

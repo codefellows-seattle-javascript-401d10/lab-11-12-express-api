@@ -10,35 +10,36 @@ const bookRouter = new Router();
 
 bookRouter.post('/api/book', jsonParser, function(req, res, next){
   debug('hit route POST / api/book');
-  Book.createBook(req.body)
+  Book.createItem(req.body)
      .then(book => res.json(book))
      .catch(err => next(err));
 });
 
 bookRouter.get('/api/book/:id', function(req, res, next){
   debug('hit route GET / api/book:id');
-  Book.getBook('book', req.params.id)
-      .then( book => res.json(book))
-      .catch (err => next(err));
+  Book.getItem(req.params.id)
+  .then( book => res.json(book))
+  .catch (err => next(err));
 });
 
 bookRouter.get('/api/book/', function(req, res, next){
   debug('hit route GET / api/book');
   Book.getIDs()
-     .then( ids => res.json(ids))
-     .catch ( err => next(err));
+  .then( ids => res.json(ids))
+  .catch ( err => next(err));
 });
 
 bookRouter.delete('/api/book/:id', function(req, res, next) {
   debug('hit route DELETE /api/book');
-  Book.deleteBook('book', req.params.id);
+  Book.deleteItem('book', req.params.id);
   next();
 });
 
-bookRouter.put('/api/book/:id', function(req,res, next) {
+bookRouter.put('/api/book/:id',jsonParser, function(req,res, next) {
   debug('hit route PUT /api/book');
-  Book.updateBook('book', req.params.id);
-  next();
+  Book.updateItem(req.params.id, req.body)
+  .then(book => res.json(book))
+  .catch(err => next(err));
 });
 
 module.exports = bookRouter;

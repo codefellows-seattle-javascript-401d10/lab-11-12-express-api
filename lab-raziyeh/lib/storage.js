@@ -22,8 +22,10 @@ exports.createItem = function(schemaName, item) {
 };
 
 exports.getItem = function(schemaName, id){
+  debug('get item / storage.js');
   if(!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if(!id) return Promise.reject(createError(400, 'expected id'));
+  
   return fs.readFileProm(`${__dirname}/../data/${schemaName}/${id}.json`)
     .then( data => {
       try {
