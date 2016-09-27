@@ -8,6 +8,12 @@ require('../server');
 
 describe('Testing cat routes', function() {
 
+const exampleCat = {
+  id: '1234',
+  name: 'Moggy',
+  breed: 'Shorthair',
+};
+
   beforeEach(function(){
     let cat = {
       id: '1234',
@@ -58,7 +64,7 @@ describe('Testing cat routes', function() {
 
   describe('Testing GET /api/cat', function() {
     it('Should GET a cat and status code 200', function(done) {
-      request.get('localhost:3000/api/cat?id=1234')
+      request.get('localhost:3000/api/cat/1234')
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).to.equal(200);
@@ -69,7 +75,7 @@ describe('Testing cat routes', function() {
     });
 
     it('Should return a 404 status for an ID not found', function(done) {
-      request.get('localhost:3000/api/cat?id=1235')
+      request.get('localhost:3000/api/cat/1235')
       .end((err, res) => {
         expect(res.status).to.equal(404);
         expect(res.text).to.equal('NotFoundError');
@@ -78,11 +84,11 @@ describe('Testing cat routes', function() {
       });
     });
 
-    it('Should return a 400 status', function(done) {
+    it('Should return a 404 status', function(done) {
       request.get('localhost:3000/api/cat')
       .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.text).to.equal('BadRequestError');
+        expect(res.status).to.equal(404);
+        expect(res.text).to.equal('Cannot GET /api/cat\n');
         expect(err).to.not.equal(null);
         done();
       });
@@ -91,7 +97,7 @@ describe('Testing cat routes', function() {
 
   describe('Testing PUT /api/cat', function(){
     it('Should return a new name and breed for Moggy, Shorthair', function(done){
-      request.put('localhost:3000/api/cat?id=1234')
+      request.put('localhost:3000/api/cat/1234')
       .send({name: 'Pochi', breed: 'Persian'})
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -101,21 +107,23 @@ describe('Testing cat routes', function() {
       });
     });
 
-    it('Should return a 400 status and BadRequestError for a missing object', function(done){
-      request.put('localhost:3000/api/cat?id=1234')
+    it('Should return a 404 status and NotFoundError for an invalid id', function(done){
+      request.put('localhost:3000/api/cat/1235')
+      .send({name: 'Pochi', breed: 'Persian'})
       .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.text).to.equal('BadRequestError');
+        expect(res.status).to.equal(404);
+        expect(res.text).to.equal('NotFoundError');
         done();
       });
     });
 
-    it('Should return a 400 status and BadRequestError for an invalid object', function(done){
-      request.put('localhost:3000/api/cat?id=1234')
-      .send({name: 'Pochi', content: 'Persian'})
+    it('Should return a 400 status and SyntaxError for an invalid or missing JSON object', function(done){
+      request.put('localhost:3000/api/cat/1234')
+      .set('Content-type', 'application/json')
+      .send('{')
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.text).to.equal('BadRequestError');
+        expect(res.text).to.equal('SyntaxError');
         done();
       });
     });
