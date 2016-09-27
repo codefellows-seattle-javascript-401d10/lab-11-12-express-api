@@ -3,7 +3,7 @@
 // create the note router
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
-const debug = require('debug')('duck:server');
+const debug = require('debug')('duck:router');
 const duckRouter = new Router();
 
 const Duck = require('../model/duck');
