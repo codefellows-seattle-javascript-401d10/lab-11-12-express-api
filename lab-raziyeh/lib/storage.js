@@ -43,12 +43,12 @@ exports.updateItem = function(schemaName, id, data) {
   if(!schemaName) return Promise.reject(createError(400,'expected schemaName'));
   if(!data) return Promise.reject(createError(400,'expected book data'));
   if(!id) return Book.createBook(data);
-
-  return fs.readFileProm(`${__dirname}/../data/${schemaName}/${id}.json`)
-  .then( item => {
-
-  })
-  .catch(err => Promise.reject(createError(404, err.message)));
+  // 
+  // return fs.readFileProm(`${__dirname}/../data/${schemaName}/${id}.json`)
+  // .then( item => {
+  //
+  // })
+  // .catch(err => Promise.reject(createError(404, err.message)));
 
 };
 
