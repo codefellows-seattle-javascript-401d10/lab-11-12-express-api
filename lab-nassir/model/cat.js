@@ -34,9 +34,15 @@ Cat.deleteCat = function(id) {
   return storage.deleteItem('cat', id);
 };
 
-Cat.updateCat = function(req) {
+Cat.updateCat = function(id, _cat) {
   debug('Hit Cat.updateCat');
-  let newCat = new Cat(req.body.name, req.body.breed);
-  newCat.id = req.query.id;
-  return storage.createItem('cat', newCat);
+  return storage.fetchItem('cat', id)
+  .catch(err => Promise.reject(createError(404, err.message)))
+  .then( cat => {
+    for (var key in cat) {
+      if (key === 'id') continue;
+      if (_cat[key]) cat[key] = _cat[key];
+    }
+    return storage.createItem('cat', cat);
+  });
 };
