@@ -118,6 +118,16 @@ describe('testing portolio route', function(){
           done();
         });
       });
+      it('should return a 400 for invalid PUT request', done => {
+        let updateData = 'justastring';
+        request.put(`${URL}/api/portfolio/${this.tempPortfolio.id}`)
+        .set('Content-Type', 'application/json')
+        .send(updateData)
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
     });
   });
 });
