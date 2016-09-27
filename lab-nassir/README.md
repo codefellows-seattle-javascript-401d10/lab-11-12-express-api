@@ -21,7 +21,11 @@ From your terminal, navigate to the home directory and enter `npm start`. A welc
 
 CatAPI has one endpoint: `/api/cats`. It accepts four HTTP methods: GET, POST, PUT and DELETE.
 
-GET and DELETE receive a querystring with an ID. POST accepts a JSON object with `name` and `breed` parameters. POSTing a new cat will return a JSON object:
+GET and DELETE receive a querystring with an ID. For example:
+
+`localhost:3000/api/cat?id=1234`
+
+POST accepts a JSON object with `name` and `breed` parameters. When you POST a new cat, the server will return a JSON object reflecting your new cat record:
 
 `{
     "breed": "Shorthair",
@@ -29,7 +33,14 @@ GET and DELETE receive a querystring with an ID. POST accepts a JSON object with
     "name": "Moggy"
 }
 `
+
 Make a mental note of this easy-to-remember ID number. It is the best way to retrieve, update and delete your cat's record. It is also the only way.
+
+To update your cat record, use PUT. Pass in a JSON object representing your changes along with your cat's ID number:
+
+`echo '{"name": "NewCatName", "breed": "AnyBreed"}'| curl PUT localhost:3000/api/cat?id=1234`
+
+IMPORTANT: Don't get the easy-to-remember ID number wrong when using PUT. Trust us on this...
 
 CatAPI can only record the name and breed of your cats. Attempting to enter additional information will return an error message. CatAPI was the first cat-based API to break in this fashion, and our competitors are COPYCATS.
 
@@ -52,5 +63,5 @@ From the shell instance running the server, end the server with `^C`.
 # What to do if you encounter a bug
 
 * If you are a Codefellows instructor, mark me down and leave me a note and I will fix it.
-* If you are a Codefellows student, what are you doing peeking at my repo?
-* If you are not from Codefellows, put a dollar in a sock every day for a year. At the end of the year, you should have enough to buy a tiny little violin. Go ahead and play it.
+* If you are a Codefellows student, don't worry, I peek at your repos too.
+* If you are not from Codefellows, put a dollar in a sock every day for a year. At the end of the year, you should have enough to buy a little violin. Go ahead and play it.
