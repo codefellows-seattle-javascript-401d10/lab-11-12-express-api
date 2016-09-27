@@ -119,17 +119,6 @@ describe('Testing cat routes', function() {
         done();
       });
     });
-
-    // it('Should return a 400 status and BadRequestError for a bad ID', function(done){
-    //   request.put('localhost:3000/api/cat?id=1235')
-    //   .send({name: 'Pochi', breed: 'Persian'})
-    //   .end((err, res) => {
-    //     expect(res.status).to.equal(400);
-    //     expect(res.text).to.equal('BadRequestError');
-    //     done();
-    //   });
-    // });
-
   });
 
   describe('Testing unregistered routes', function(){
