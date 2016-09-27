@@ -21,9 +21,11 @@ const Duck = module.exports = function(name, color, feathers, id) {
 };
 
 Duck.createDuck = function(_duck) {
+  debug('_duck', _duck);
   debug('createDuck');
   try {
-    let duck = new Duck(_duck.name, _duck.color, _duck.feathers);
+    let duck = new Duck(_duck.name, _duck.color, _duck.feathers, _duck.id);
+    debug('duck', duck);
     return storage.createItem('duck', duck);
   } catch (err) {
     return Promise.reject(err);
@@ -46,13 +48,16 @@ Duck.deleteDuck = function(id) {
 };
 
 Duck.updateDuck = function(id, _duck) {
+  debug('_duck', _duck);
+  if (!_duck) return Promise.reject(createError(400, 'no duck here'));
   debug('updateDuck');
   return storage.fetchItem('duck', id)
   .catch( err => Promise.reject(createError(404, err.message)))
   .then( duck => {
-    for (var key in duck) {
+    for (var key in _duck) { // properties on duck in storage
       if (key === 'id') continue;
-      if (_duck[key]) duck[key] = _duck[key];
+      if (!duck[key]) return Promise.reject(createError(400, 'no duck here'));
+      if (duck[key]) duck[key] = _duck[key]; // if a property on request exists, replace property on dock in storage with property on the request body
     }
     return storage.createItem('duck', duck);
   });

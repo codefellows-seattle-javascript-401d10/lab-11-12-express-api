@@ -15,7 +15,7 @@ duckRouter.get('/api/duck/:id', function(req, res, next) {
     .catch (err => next(err));
 });
 
-duckRouter.get('/api/duck', function(req, res, next) {
+duckRouter.get('/api/duck/all', function(req, res, next) {
   Duck.fetchDuckIDs()
   .then( ids => res.json(ids))
   .catch(next);
@@ -29,16 +29,16 @@ duckRouter.post('/api/duck', jsonParser, function(req, res, next) {
 });
 
 
-duckRouter.delete('/api/duck', function(req, res, next) {
+duckRouter.delete('/api/duck/:id', function(req, res, next) {
   debug('hit route DELETE /api/duck');
-  Duck.deleteDuck(req.query.id)
+  Duck.deleteDuck(req.params.id)
   .then( duck => res.json(duck))
   .catch(err => next(err));
 });
 
-duckRouter.put('/api/duck', jsonParser, function(req, res, next) {
-  debug('hit route PUT /api/duck');
-  Duck.updateDuck(req.query.id, req.body)
+duckRouter.put('/api/duck/:id', jsonParser, function(req, res, next) {
+  debug('hit route PUT /api/duck/:id');
+  Duck.updateDuck(req.params.id, req.body)
   .then(duck => res.json(duck))
   .catch(next);
 });
