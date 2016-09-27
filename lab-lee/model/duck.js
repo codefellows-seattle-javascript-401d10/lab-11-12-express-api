@@ -35,11 +35,6 @@ Duck.fetchDuck = function(id) {
   return storage.fetchItem('duck', id);
 };
 
-Duck.fetchAllDucks = function() {
-  debug('fetchAllDucks');
-  return storage.fetchAll('duck');
-};
-
 Duck.deleteDuck = function(id) {
   debug('deleteDuck');
   return storage.deleteItem('duck', id);
