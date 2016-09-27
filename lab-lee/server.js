@@ -25,7 +25,7 @@ app.get('/hello', function(req, res, next) {
 app.get('/api/duck', function(req, res, next) {
   debug('hit route GET /api/duck');
   Duck.fetchDuck(req.query.id)
-  .then( duck => res.join(duck))
+  .then( duck => res.json(duck))
   .catch (err => next(err));
 });
 
@@ -36,7 +36,14 @@ app.post('/api/duck', jsonParser, function(req, res, next) {
   .catch(err => next(err));
 });
 
-app.use(function(err, req, res) {
+app.delete('/api/duck', function(req, res, next) {
+  debug('hit route DELETE /api/duck');
+  Duck.deleteDuck(req.query.id)
+  .then( duck => res.json(duck))
+  .catch(err => next(err));
+});
+
+app.use(function(err, req, res, next) {
   debug('error middleware');
   console.error(err.message);
 
@@ -45,6 +52,7 @@ app.use(function(err, req, res) {
   }
   err = createError(500, err.message);
   res.status(err.status).send(err.name);
+  next();
 });
 
 app.listen(PORT, function(){
