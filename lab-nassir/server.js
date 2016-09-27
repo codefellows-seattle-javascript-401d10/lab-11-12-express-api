@@ -1,5 +1,6 @@
 'use strict';
 
+const exec = require('child_process').exec;
 const express = require('express');
 const morgan = require('morgan');
 const debug = require('debug')('cat:server');
