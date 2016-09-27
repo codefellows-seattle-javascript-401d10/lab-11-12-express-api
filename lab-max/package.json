@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "start": "DEBUG='pizza*' node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "DEBUG='pizza*' ./node_modules/mocha/bin/mocha"
   },
   "keywords": [],
   "author": "",

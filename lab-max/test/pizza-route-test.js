@@ -44,7 +44,7 @@ describe('testing Pizza routes', function(){
       });
 
       it('should return a pizza', function(done){
-        request.get(`localhost:3000/api/pizza?id=${tempPizza.id}`)
+        request.get(`localhost:3000/api/pizza/${tempPizza.id}`)
         .end((err, res) => {
           if(err) return done(err);
           expect(res.status).to.equal(200);
@@ -59,19 +59,9 @@ describe('testing Pizza routes', function(){
 
     describe('testing for a request not found', function(){
       it('should return a 404 error', function(done){
-        request.get('localhost:3000/api/pizza?id=1111')
+        request.get('localhost:3000/api/pizza/1111')
         .end((err, res) => {
           expect(res.status).to.equal(404);
-          done();
-        });
-      });
-    });
-
-    describe('testing for a bad request', function(){
-      it('should return a 400 error', function(done){
-        request.get('localhost:3000/api/pizza')
-        .end((err, res) => {
-          expect(res.status).to.equal(400);
           done();
         });
       });
@@ -83,9 +73,11 @@ describe('testing Pizza routes', function(){
       var tempPizza;
 
       after( done => {
-        Pizza.deletePizza(tempPizza.id)
-        .then( () => done())
-        .catch( err => done(err));
+        if(tempPizza) {
+          Pizza.deletePizza(tempPizza.id)
+          .then( () => done())
+          .catch( err => done(err));
+        }
       });
 
       it('should return a pizza', function(done){
@@ -120,7 +112,6 @@ describe('testing Pizza routes', function(){
         request.post('localhost:3000/api/pizza')
         .send(pizza)
         .end((err, res) => {
-          console.log(res.status);
           expect(res.status).to.equal(400);
           expect(res.body.meat).to.equal(undefined);
           done();
@@ -151,7 +142,7 @@ describe('testing Pizza routes', function(){
       });
 
       it('should return an updated pizza', function(done){
-        request.put(`localhost:3000/api/pizza?id=${tempPizza.id}`)
+        request.put(`localhost:3000/api/pizza/${tempPizza.id}`)
         .send(tempPizza)
         .end((err, res) => {
           if (err) return done(err);
@@ -183,11 +174,44 @@ describe('testing Pizza routes', function(){
       });
 
       it('should return a 400 error for invalid body', function(done){
-        request.put(`localhost:3000/api/pizza?id=${aPizza.id}`)
+        request.put(`localhost:3000/api/pizza/${aPizza.id}`)
         .set('Content-Type', 'application/json')
         .send('{')
         .end((err, res) => {
           expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('testing DELETE /api/pizza', function(){
+    describe('testing a valid DELETE request', function(){
+      var tempPizza;
+
+      before( done => {
+        Pizza.createPizza(pizza)
+        .then( pizza => {
+          tempPizza = pizza;
+          done();
+        });
+      });
+
+      it('should return no body with a 204 status code', function(done){
+        request.del(`localhost:3000/api/pizza/${tempPizza.id}`)
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(204);
+          done();
+        });
+      });
+    });
+
+    describe('testing a invalid DELETE request', function(){
+      it('should return a 404 status code for invalid or missing id', function(done){
+        request.del('localhost:3000/api/pizza')
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
           done();
         });
       });
