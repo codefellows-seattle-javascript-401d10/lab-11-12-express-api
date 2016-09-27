@@ -9,7 +9,6 @@ const exampleDuck = {
   name: 'exampleduck',
   color: 'brown',
   feathers: '0',
-
 };
 
 require('../server.js');
