@@ -1,6 +1,7 @@
 'use strict';
 
 const Promise = require('bluebird');
+const debug = require('debug')('pizza:storage');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const mkdirp = Promise.promisifyAll(require('mkdirp'));
 const createError = require('http-errors');
@@ -8,6 +9,7 @@ const createError = require('http-errors');
 module.exports = exports = {};
 
 exports.createItem = function(schemaName, item){
+  debug('createItem');
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!item) return Promise.reject(createError(400, 'expected item'));
 
@@ -25,6 +27,7 @@ exports.createItem = function(schemaName, item){
 };
 
 exports.fetchItem = function(schemaName, id){
+  debug('fetchItem');
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!id) return Promise.reject(createError(400, 'expected id'));
 
@@ -41,6 +44,7 @@ exports.fetchItem = function(schemaName, id){
 };
 
 exports.deleteItem = function(schemaName, id){
+  debug('deleteItem');
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!id) return Promise.reject(createError(400, 'expected id'));
 
