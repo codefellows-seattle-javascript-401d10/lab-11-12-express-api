@@ -5,7 +5,9 @@ const createError = require ('http-errors');
 const debug = require('debug')('duck:duck');
 const storage = require('../lib/storage');
 
-const Duck = module.exports = function(name, color, feathers) {
+const newDate = new Date();
+
+const Duck = module.exports = function(name, color, feathers, id) {
   debug('instantiate duck');
   if (!name) throw createError(400, 'expected name');
   if (!color) throw createError(400, 'expected color');
@@ -14,7 +16,8 @@ const Duck = module.exports = function(name, color, feathers) {
   this.name = name;
   this.color = color;
   this.feathers = feathers;
-  this.id = uuid.v1().substring(0, 8);
+  this.id = id || uuid.v1().substring(0, 8);
+  this.dateCreated = (newDate.getMonth()+1) + ', ' + newDate.getDate() + ', ' + newDate.getFullYear();
 };
 
 Duck.createDuck = function(_duck) {
@@ -32,11 +35,6 @@ Duck.fetchDuck = function(id) {
   return storage.fetchItem('duck', id);
 };
 
-Duck.fetchAllDucks = function() {
-  debug('fetchAllDucks');
-  return storage.fetchAll('duck');
-};
-
 Duck.deleteDuck = function(id) {
   debug('deleteDuck');
   return storage.deleteItem('duck', id);
@@ -45,7 +43,7 @@ Duck.deleteDuck = function(id) {
 Duck.putDuck = function(_duck) {
   debug('putDuck');
   try {
-    let duck = new Duck(_duck.name, _duck.color, _duck.feathers);
+    let duck = new Duck(_duck.name, _duck.color, _duck.feathers, _duck.id);
     return storage.putItem('duck', duck);
   } catch (err) {
     return Promise.reject(err);

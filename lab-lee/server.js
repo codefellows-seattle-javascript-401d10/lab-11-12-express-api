@@ -4,7 +4,7 @@
 const morgan = require('morgan');
 const express = require('express');
 const createError = require('http-errors');
-const debug = require('debug')('note:server');
+const debug = require('debug')('duck:server');
 const jsonParser = require('body-parser').json();
 
 // app modules
@@ -27,12 +27,6 @@ app.get('/api/duck', function(req, res, next) {
   Duck.fetchDuck(req.query.id)
   .then( duck => res.json(duck))
   .catch (err => next(err));
-});
-
-app.get('/api/duck/all', function(req, res, next) {
-  debug('hit route GET /api/duck');
-  Duck.fetchAllDucks();
-  next();
 });
 
 app.post('/api/duck', jsonParser, function(req, res, next) {

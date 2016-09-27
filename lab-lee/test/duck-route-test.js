@@ -234,14 +234,5 @@ describe('testing duck routes', function() {
       .then(() => done())
       .catch(err => done(err));
     });
-    //
-    // it('should return an array', function(done) {
-    //   request.get('localhost:3000/api/duck/all')
-    //   .end((err, res) => {
-    //     // if (err) return done(err);
-    //     console.log(res.body);
-    //     done();
-    //   });
-    // });
   });
 });
