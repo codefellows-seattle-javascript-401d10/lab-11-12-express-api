@@ -2,9 +2,9 @@
 
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
-const portfolioRouter = new Portfolio();
+// const portfolioRouter = new Portfolio();
 const debug = require('debug')('portfolio:portfolioRouter');
-const Portfolio = require('../model/portfolio.js');
+// const Portfolio = require('../model/portfolio.js');
 
 
 module.exports = portfolioRouter();
@@ -19,7 +19,7 @@ portfolioRouter.post('/api/portfolio', jsonParser, function(req, res, next){
 //now using params
 portfolioRouter.get('/api/portfolio/:id', function(req, res, next){
   debug('hit route GET /api/portfolio');
-  Portfolio.fetchPortfolio('portfolio', req.params.id)
+  Portfolio.fetchPortfolio(req.params.id)
   .then( portfolio => res.json(portfolio))
   .catch( err => next(err));
   next();

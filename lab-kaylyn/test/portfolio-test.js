@@ -4,6 +4,7 @@ const request = require('superagent');
 const expect = require('chai').expect;
 const uuid = require('node-uuid');
 const storage = require('../lib/storage');
+const Portfolio = require('../model/portfolio.js');
 const URL = 'http://localhost:3000';
 
 const examplePortfolio = {
@@ -29,7 +30,7 @@ describe('testing note route', function(){
         .catch(err => done(err));
       });
       it('should return a portfolio', done => {
-        request.get(`${URL}/api/portfolio/${this.tempPortfolio.id}`);
+        request.get(`${URL}/api/portfolio/${this.tempPortfolio.id}`)
         .end((err,res) => {
           if(err) return done(err);
           expect(res.status).to.equal(200);
@@ -43,7 +44,7 @@ describe('testing note route', function(){
     });
     describe('with invalid id', function(){
       it('should return 404 response', done => {
-        request.get(`${URL}/api/portfolio?=666`);
+        request.get(`${URL}/api/portfolio/666`)
         .end((err,res) => {
           if(err) return done(err);
           expect(res.status).to.equal(404);
