@@ -39,7 +39,7 @@ app.post('/api/duck', jsonParser, function(req, res, next) {
 app.delete('/api/duck', function(req, res, next) {
   debug('hit route DELETE /api/duck');
   Duck.deleteDuck(req.query.id)
-  .then()
+  .then( duck => res.json(duck))
   .catch(err => next(err));
 });
 
