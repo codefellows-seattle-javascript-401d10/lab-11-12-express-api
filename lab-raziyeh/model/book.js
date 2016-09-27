@@ -16,27 +16,40 @@ const Book = module.exports = function(title, author, page) {
   this.creationDate = new Date();
 };
 
-Book.createBook = function(data) {
-  debug('create Book');
+Book.createItem = function(data) {
+  debug('create Item');
   try {
     let book = new Book(data.title, data.author, data.page);
     return storage.createItem('book', book);
-  } catch (error) {
-    return Promise.reject(error);
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 
-Book.getBook = function(schemaName, id) {
-  debug('get Book');
+Book.getItem = function(id) {
+  debug('get Item');
   return storage.getItem('book', id);
 };
 
-Book.deleteBook = function(schemaName, id) {
-  debug('delete Book');
+Book.deleteItem = function(id) {
+  debug('delete Item');
   return storage.deleteItem('book', id);
 };
 
-Book.updateBook = function(schemaName, id) {
-  debug('update Book');
-  return storage.updateItem('book', id);
+Book.updateItem = function(id, _book) {
+  debug('getBook- updateItem');
+  return storage.getItem('book', id)
+  .catch(err => Promise.reject(createError(404, err.message)))
+  .then(book => {
+    for(var key in book) {
+      if(key === 'id') continue;
+      if(_book[key]) book[key] = _book[key];
+    }
+    return storage.createItem(book);
+  });
+};
+
+Book.getIDs = function() {
+  debug('getIDs');
+  return storage.availIDs('book');
 };

@@ -16,33 +16,34 @@ app.use(morgan('dev'));
 
 app.post('/api/book', jsonParser, function(req, res, next){
   debug('hit route POST / api/book');
-  Book.createBook(req.body)
+  Book.createItem(req.body)
    .then(book => res.json(book))
    .catch(err => next(err));
 });
 
 app.get('/api/book', function(req, res, next){
   debug('hit route GET / api/book');
-  console.log('id ',req.query.id);
-  Book.getBook('book', req.query.id)
+
+  Book.getItem(req.query.id)
     .then( book => res.json(book))
     .catch (err => next(err));
 });
 
 app.delete('/api/book', function(req, res, next) {
   debug('hit route DELETE /api/book');
-  Book.deleteBook('book', req.query.id);
+  Book.deleteBook(req.query.id);
   next();
 });
 
-app.put('/api/book', function(req,res, next) {
+app.put('/api/book', jsonParser, function(req, res, next){
   debug('hit route PUT /api/book');
-  Book.updateBook('book', req.query.id);
-  next();
+
+  Book.updateItem(req.query.id, req.body)
+  .then(book => res.json(book))
+  .catch(next);
 });
 
 app.use(function(err, req, res, next) {
-  console.error(err.message);
   if(err.status) {
     res.status(err.status).send(err.name);
     next();
