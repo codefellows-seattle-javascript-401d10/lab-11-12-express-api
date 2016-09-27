@@ -8,7 +8,6 @@ const catRouter = new Router();
 
 catRouter.get('/api/cat/:id', function(req, res, next) {
   debug('Hit route GET /api/cat');
-  debug('refactored id: ', req.params.id);
   Cat.fetchCat(req.params.id)
   .then(cat => res.json(cat))
   .catch(err => next(err));
@@ -28,10 +27,10 @@ catRouter.put('/api/cat/:id', jsonParser, function(req, res, next) {
   .catch(err => next(err));
 });
 
-catRouter.delete('/api/cat', function(req, res, next) {
+catRouter.delete('/api/cat/:id', function(req, res, next) {
   debug('Hit route DELETE /api/cat');
-  Cat.deleteCat(req.query.id)
-  .then(cat => res.json(cat))
+  Cat.deleteCat(req.params.id)
+  .then(() => res.sendStatus(204))
   .catch(err => next(err));
 });
 

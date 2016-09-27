@@ -1,10 +1,9 @@
 'use strict';
 
 const Promise = require('bluebird');
-const debug = require('debug')('note:storage');
+const debug = require('debug')('cat:storage');
 const createError = require('http-errors');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const del = require('del');
 const mkdirp = Promise.promisifyAll(require('mkdirp'), {suffix: 'Prom'});
 
 module.exports = exports = {};
@@ -52,7 +51,8 @@ exports.deleteItem = function(schemaName, id) {
   if(!schemaName) return Promise.reject(createError(400, 'We expected a schemaName...'));
   if(!id) return Promise.reject(createError(400, 'We expected an id...'));
 
-  return del(`${__dirname}/../data/${schemaName}/${id}.json`);
+  return fs.unlinkProm(`${__dirname}/../data/${schemaName}/${id}.json`)
+  .catch(err => Promise.reject(createError(404, err.message)));
 };
 
 // exports.availIDs = function(schemaName) {
