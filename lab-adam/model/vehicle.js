@@ -35,16 +35,17 @@ Vehicle.fetchVehicle = function(id){
   }
 };
 
-Vehicle.modifyVehicle = function(id, _vehicle){
+Vehicle.updateVehicle = function(id, _vehicle){
   debug('modifyVehicle');
-  if (!id) return Vehicle.createVehicle(_vehicle);
-  try {
-    let vehicle = new Vehicle(_vehicle.type, _vehicle.brand, _vehicle.rimSize, _vehicle.topSpeed);
-    vehicle.id = id;
+  return storage.fetchItem('vehicle', id)
+  .catch(err => Promise.reject(createError(404, err.message)))
+  .then(vehicle => {
+    for (var key in vehicle){
+      if (key === 'id') continue;
+      if (_vehicle[key]) vehicle[key] = _vehicle[key];
+    }
     return storage.createItem('vehicle', vehicle);
-  } catch (err) {
-    return Promise.reject(err);
-  }
+  });
 };
 
 Vehicle.deleteVehicle = function(id){

@@ -53,5 +53,7 @@ exports.deleteItem = function(schemaName, id){
 };
 
 exports.availIDs = function(schemaName) {
-  return fs.readdirProm(`${__dirname}/../data/${schemaName}`);
+  return fs.readdirProm(`${__dirname}/../data/${schemaName}`)
+  .then(filenames => filenames.map(name => name.split('.json')[0]))
+  .catch(err => Promise.reject(createError(404, err.message)));
 };
