@@ -1,6 +1,5 @@
 'use strict';
 
-const exec = require('child_process').exec;
 const express = require('express');
 const morgan = require('morgan');
 const debug = require('debug')('cat:server');
@@ -51,10 +50,12 @@ app.use(function(err, req, res, next) {
 
   if (err.status) {
     res.status(err.status).send(err.name);
+    next();
     return;
   }
   err = createError(500, err.message);
   res.status(err.status).send(err.name);
+  next();
 });
 
 app.listen(PORT, function() {
