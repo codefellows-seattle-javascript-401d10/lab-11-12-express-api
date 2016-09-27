@@ -161,26 +161,30 @@ describe('testing duck routes', function() {
     });
   });
 
-  describe('testing GET /api/duck/all', function() {
-    let duck;
-
-    before( done => {
-      Duck.createDuck( {
-        name: 'larry',
-        color: 'blue',
-        feathers: '15',
-      })
-      .then( (_duck) => {
-        duck = _duck;
-        done();
-      })
-      .catch(err => done(err));
-    });
-
-    after( done => {
-      Duck.deleteDuck(duck.id)
-      .then(() => done())
-      .catch(err => done(err));
-    });
-  });
+  // describe('testing GET /api/duck/all', function() {
+  //   let duck;
+  //
+  //   before( done => {
+  //     Duck.createDuck(exampleDuck)
+  //     .then( duck => {
+  //       this.tempDuck = duck;
+  //       done();
+  //     })
+  //     .catch(err => done(err));
+  //   });
+  //
+  //   after( done => {
+  //     Duck.deleteDuck(duck.id)
+  //     .then(() => done())
+  //     .catch(err => done(err));
+  //   });
+  //
+  //   it('should return an array of items from the storage directory', done => {
+  //     request.get(`${url}/api/duck/all`)
+  //     .end( (err, res) => {
+  //       expect(res.status).to.equal()
+  //     })
+  //   })
+  //
+  // });
 });
