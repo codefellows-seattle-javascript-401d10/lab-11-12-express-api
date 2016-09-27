@@ -3,14 +3,12 @@
 // npm modules
 const morgan = require('morgan');
 const express = require('express');
-const Router = express.Router;
 const createError = require('http-errors');
 const jsonParser = require('body-parser').json();
 const debug = require('debug')('note:server');
 
 // app modules
 const Person = require('./model/person');
-const storage = require('./lib/storage.js');
 
 //module constants
 const PORT = process.env.PORT || 3000;
@@ -58,6 +56,7 @@ app.put('/api/person', jsonParser, function(req, res, next){
 app.use(function(err, req, res, next){
   debug('error middleware');
   console.error(err.message);
+  next();
 
   if (err.status) {
     res.status(err.status).send(err.name);
