@@ -10,19 +10,23 @@ module.exports = exports = {};
 
 exports.createItem = function(schemaName, item){
   debug('createItem');
+  console.log(item, ' line 13 of storage createdItem');
   //error handling
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!item) return Promise.reject(createError(400, 'expected item'));
   //return Promise.resolve(item)
   let json = JSON.stringify(item);
   return fs.writeFileProm(`${__dirname}/../data/${schemaName}/${item.id}.json`, json)
-  .then( () => item)
-  .catch ( err =>
-  Promise.reject(createError(500, err.message)));
+  .then(() => {
+    return Promise.resolve(item);
+  })
+  .catch( err => {
+    Promise.reject(createError(500, err.message));
+  });
 };
 
 exports.fetchItem = function(schemaName, id){
-  debug ('fetchItem');
+  debug('fetchItem');
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!id) return Promise.reject(createError(400, 'expected id'));
 
@@ -39,7 +43,7 @@ exports.fetchItem = function(schemaName, id){
 };
 
 exports.deleteItem = function(schemaName, id){
-  debug ('fetchItem');
+  debug('deleteItem');
     //error handling
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if(!id) return Promise.reject (createError(400, 'expected id'));

@@ -31,9 +31,9 @@ app.post('/api/person', jsonParser, function(req, res, next){
 });
 
 app.get('/api/person', function(req, res, next){
-  debug ('hit route GET /api/person');
+  debug('hit route GET /api/person');
   Person.fetchPerson(req.query.id)
-  .then (person => res.json(person))
+  .then(person => res.json(person))
   .catch( err => next(err));
 });
 
@@ -46,7 +46,7 @@ app.delete('/api/person', function(req, res, next){
 });
 
 
-//TODO: need PUT method
+
 app.put('/api/person', jsonParser, function(req, res, next){
   debug ('hit route PUT /api/person');
   Person.updatePerson(req.query.id, req.body)

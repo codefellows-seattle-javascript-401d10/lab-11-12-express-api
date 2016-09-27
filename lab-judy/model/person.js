@@ -37,12 +37,15 @@ Person.deletePerson = function(id){
 
 Person.updatePerson = function(id, person) {
   debug('updatePerson');
-  if (!id) return Person.createPerson(person);
+  if (!id) return Promise.reject(createError(400, 'bad request'));
   if (!person) return Promise.reject(createError(400, 'bad request'));
   return storage.fetchItem('person', id)
-  .then( ()=> {
-    person.id = id;
-    storage.createItem ('person', person);
+  .then( (database_person)=> {
+    for (var key in database_person){
+      if (key === 'id') continue;
+      if (person[key]) database_person[key] = person[key];
+    }
+    return storage.createItem ('person', database_person);
   })
-  .catch( (err) =>  Promise.reject(err));
+  .catch( (err) =>  Promise.reject(createError(500, err.message)));
 };
