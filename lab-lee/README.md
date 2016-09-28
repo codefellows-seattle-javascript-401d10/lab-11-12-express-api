@@ -25,8 +25,7 @@ That should start the server. If you're unsure, you should receive a console log
 
 The following GET and DELETE paths are valid routes that may be queried with requests. Keep in mind, [PORT] represents where the port number should be passed in.:
 
-        * `$ localhost:[PORT]/hello ` Returns a 'Hey There' from the server.
-        * `$ localhost:[PORT]/api/duck?id=[Id]` Returns a duck if an existing duck Id is entered in place of [Id].
+        * `$ localhost:[PORT]/api/duck/[Id]` Returns a duck if an existing duck Id is entered in place of [Id].
 
 The following POST and PUT paths currently require testing through your CLI with the server up and running in another instance. You can PUT and POST new ducks from JSON files by running the following commands, where [filepath] is the filepath to the json file being used:
 
