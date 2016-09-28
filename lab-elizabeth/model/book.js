@@ -1,14 +1,15 @@
 'use strict';
 
 const uuid = require('node-uuid');
-// const createError = require('http-errors');
+const createError = require('http-errors');
 const storage = require('../lib/storage');
 const debug = require('debug')('book:book');
 
 const Book = module.exports = function(title, author, description){
-  if(!title) throw new Error('title expected');
-  if(!author) throw new Error('author expected');
-  if(!description) throw new Error('description expected');
+  if(!title) throw createError(400, 'title expected');
+  if(!author) throw createError(400, 'author expected');
+  if(!description) throw createError(400, 'description expected');
+
   this.id = uuid.v1();
   this.title = title;
   this.author = author;
@@ -35,7 +36,20 @@ Book.fetchBook = function(id){
   return storage.fetchItem('book', id);
 };
 
+Book.fetchIDs = function(){
+  debug('fetchIDs');
+  return storage.availIDs('book');
+};
+
 Book.updateBook = function(input, id){
   debug('updateBook');
-  return storage.updateItem('book', input, id);
+  return storage.fetchItem('book', id)
+  .catch(err => Promise.reject(createError(404, err.message)))
+  .then(book => {
+    for(var key in book){
+      if(key === 'id') continue;
+      if(input[key]) book[key] = input[key];
+    }
+    return storage.createItem('book', book);
+  });
 };
