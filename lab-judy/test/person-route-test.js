@@ -181,7 +181,7 @@ describe('testing person routes', function(){
       });
     });
   });
-//TODO: DELETE - test 404, for a DELETE request with an invalid or missing id
+//DELETE - test 404, for a DELETE request with an invalid or missing id
 //404 for missing id because DELETE /api/<simple-resource-name>/ is not a route
   describe('testing DELETE for request with invalid/missing id', function(){
     before(done => {
