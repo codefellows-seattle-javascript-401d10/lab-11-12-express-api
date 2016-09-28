@@ -36,9 +36,9 @@ Book.fetchBook = function(id){
   return storage.fetchItem('book', id);
 };
 
-Book.fetchIDs = function(){
-  debug('fetchIDs');
-  return storage.availIDs('book');
+Book.fetchBooks = function(){
+  debug('fetchBooks');
+  return storage.fetchIDs('book');
 };
 
 Book.updateBook = function(input, id){

@@ -18,5 +18,5 @@ app.use(bookRouter);
 app.use(errorMiddleware);
 
 app.listen(PORT, function(){
-  debug(`server up on ${PORT}`);
+  debug(`server up! <(0-0)> ${PORT}`);
 });

@@ -5,13 +5,19 @@ const expect = require('chai').expect;
 const Book = require('../model/book');
 const url = 'http://localhost:3000';
 
-require('../server.js');
-
 const exampleBook = {
   author: 'C.S.Lewis',
   title: 'The Magicians Nephew',
   description: 'Something about Narnia',
 };
+
+const updateBook = {
+  author: 'R.F.Rankin',
+  title: 'The Hollow Chocolate Bunnies of the Apocalypse',
+  description: 'Poor Jack, toys can talk',
+};
+
+require('../server.js');
 
 describe('testing book routes', function(){
 
@@ -36,12 +42,19 @@ describe('testing book routes', function(){
         }
       });
 
-      it('should delete a book', (done) => {
+      it('should delete a book', done => {
         request.delete(`${url}/api/book/${this.tempBook.id}`)
         .end((err, res) => {
           if(err) return done(err);
           expect(res.status).to.equal(204);
-          expect(res.body.id).to.equal(null);
+          done();
+        });
+      });
+
+      it('should return status 404: not found', done => {
+        request.delete(`${url}/api/book/hippocampus`)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
           done();
         });
       });
@@ -69,7 +82,7 @@ describe('testing book routes', function(){
         .catch(err => done(err));
       });
 
-      it('should return a book', (done) => {
+      it('should return a book', done => {
         request.get(`${url}/api/book/${this.tempBook.id}`)
         .end((err, res) => {
           if(err) return done(err);
@@ -81,7 +94,7 @@ describe('testing book routes', function(){
         });
       });
 
-      it('should return status 404: not found', (done) => {
+      it('should return status 404: not found', done => {
         request.get(`${url}/api/book/hippocampus`)
         .end((err, res) => {
           expect(res.status).to.equal(404);
@@ -105,7 +118,7 @@ describe('testing book routes', function(){
         }
       });
 
-      it('should create a book', function(done){
+      it('should create a book', done => {
         request.post(`${url}/api/book`)
         .send(this.tempBook)
         .end((err, res) => {
@@ -122,35 +135,32 @@ describe('testing book routes', function(){
 
     describe('with invalid body', function(){
 
-      it('should return status 400: expected author', function(done){
+      it('should return status 400: expected author', done => {
         this.tempBook.author = '';
         request.post(`${url}/api/book`)
         .send(this.tempBook)
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(!!res.body.id).to.equal(true);
           done();
         });
       });
 
-      it('should return status 400: expected title', function(done){
+      it('should return status 400: expected title', done => {
         this.tempBook.title = '';
         request.post(`${url}/api/book`)
         .send(this.tempBook)
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(!!res.body.id).to.equal(true);
           done();
         });
       });
 
-      it('should return status 400: expected description', function(done){
+      it('should return status 400: expected description', done => {
         this.tempBook.description = '';
         request.post(`${url}/api/book`)
         .send(this.tempBook)
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(!!res.body.id).to.equal(true);
           done();
         });
       });
@@ -161,7 +171,72 @@ describe('testing book routes', function(){
 
   describe('testing PUT /api/book', function(){
 
-  });
+    describe('with valid id and body', function(){
 
+      before(done => {
+        Book.createBook(exampleBook)
+        .then(book => {
+          this.tempBook = book;
+          done();
+        })
+        .catch(err => done(err));
+      });
+
+      after(done => {
+        Book.deleteBook(this.tempBook.id)
+        .then(() => done())
+        .catch(err => done(err));
+      });
+
+      it('should update the book', done => {
+        request.put(`${url}/api/book/${this.tempBook.id}`)
+        .send(updateBook)
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          for(var key in updateBook){
+            expect(res.body[key].to.equal(updateBook[key]));
+          }
+          done();
+        });
+      });
+
+    });
+
+    describe('with invalid id or body', function(){
+
+      it('should return status 404: not found: bad id', done => {
+        request.put(`${url}/api/book/hippocampus`)
+        .send(updateBook)
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+
+      it('should return status 400: bad request: no content', done => {
+        request.put(`${url}/api/book/${this.tempBook.id}`)
+        .send({})
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+
+      it('should return status 400: bad request: no id', done => {
+        request.put(`${url}/api/book/`)
+        .send(updateBook)
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+
+    });
+
+  });
 
 });

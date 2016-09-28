@@ -5,6 +5,7 @@ const createError = require('http-errors');
 const debug = require('debug')('book:storage');
 
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
+// const mkdirp = Promise.promisifyAll(require('mkdirp'), {suffix: 'Prom'});
 
 module.exports = exports = {};
 
@@ -33,6 +34,13 @@ exports.fetchItem = function(schemaName, id){
       return Promise.reject(createError(500, err.message));
     }
   })
+  .catch(err => Promise.reject(createError(404, err.message)));
+};
+
+exports.fetchAll = function(schemaName){
+  debug('fetchAll');
+  return fs.readdirProm(`${__dirname}/../data/${schemaName}`)
+  .then(docs => docs.map(name => name.split('.json')[0]))
   .catch(err => Promise.reject(createError(404, err.message)));
 };
 
