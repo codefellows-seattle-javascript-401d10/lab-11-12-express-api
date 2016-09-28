@@ -162,37 +162,25 @@ describe('testing Book Routes', function(){
     });
   });
 
-  //DELETE - test 204, with an empty response body for DELETE request with a valid id
   describe('Testing DELETE requests to api/book', function() {
-    before(done => {
-      Book.createItem(exampleBook)
+    describe('Testing DELETE requests to api/book with valid id', function() {
+      before(done => {
+        Book.createItem(exampleBook)
           .then( book => {
             this.tempBook = book;
             done();
           })
           .catch(err => done(err));
-    });
-    it('expecting to delete a book with id provided', (done) => {
-      request.delete(`${url}/api/book/${this.tempBook.id}`)
+      });
+      it('expecting to delete a book with id provided', (done) => {
+        request.delete(`${url}/api/book/${this.tempBook.id}`)
        .end((err, res) => {
          expect(res.status).to.equal(204);
          done();
        });
+      });
     });
-  });+This app allows clients to connect to the API and perform the following operations on the /api/vehicles path:
- +- GET: takes an ID (e.g. /api/vehicles/:id)
- +- POST: takes a body JSON object with the properties listed below
- +- PUT: takes an ID and body JSON; modifies an existing object with the provided JSON.
- +- DELETE: takes an ID and deletes the object corresponding to the ID.
- +
-
-  // describe('Testing DELETE requests to api/book', function() {
-  //   it('expecting 404 for invalid or missing id ', function(done) {
-  //     request.delete(`${url}/api/book/0000`)
-  //      .end((err, res) => {
-  //        expect(res.status).to.equal(404);
-  //        done();
-  //      });
-  //   });
-  // });
+  });
 });
+
+
