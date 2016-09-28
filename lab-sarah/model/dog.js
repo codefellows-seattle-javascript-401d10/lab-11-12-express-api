@@ -2,24 +2,20 @@
 
 const uuid = require('node-uuid');
 const createError = require('http-errors');
-const debug = require('debug')('dog:dog');
+const debug = require('debug')('dog:dog-model');
 const storage = require('../lib/storage.js');
 
-const Dog = module.exports = function(id, name, breed, color) {
+const Dog = module.exports = function(name, breed, color) {
   debug('instantiate dog');
   if (!name) throw createError(400, 'expected name');
   if (!breed) throw createError(400, 'expected breed');
   if (!color) throw createError(400, 'expected color');
-  if (!id) {
-    this.id = uuid.v1();
-  } else {
-    this.id = id;
-  }
-  // if (!id) this.id = uuid.v1();
-  // this.id = id;
+
+  this.id = uuid.v1();
   this.name = name;
   this.breed = breed;
   this.color = color;
+  console.log('updated dog name in constructor', this.name);
 };
 
 // const Dog = module.exports = function(dog) {
@@ -51,15 +47,30 @@ Dog.fetchDog = function(id){
   return storage.fetchItem('dog', id);
 };
 
+//either something wrong here or in dog-router
+Dog.updateDog = function(_dog){
+  // THIS IS JUST RECEIVING AN ID, NOT A WHOLE DOG ********************************************************************
+  console.log('id in dog-model in Dog.updateDog WHAT IS THE DOGS NAMEEEEEEEEEEEEEEEEEE', _dog);
+  debug('updateDog');
+  //maybe it's not fetching it?
+  //and fetch item is expecting just an id
+  return storage.fetchItem('dog', _dog.id)
+  .catch(err => Promise.reject(createError(404, err.message)))
+  .then(newdog => {
+    for (var key in newdog){
+      if (key === 'id') continue;
+      if (_dog[key]) newdog[key] = _dog[key];
+    }
+    return storage.createItem('dog', newdog);
+  });
+};
+
 Dog.deleteDog = function(id){
   debug('deleteDog');
   return storage.deleteItem('dog', id);
 };
 
-Dog.updateDog = function(_dog){
-  console.log('id in dog.js', _dog);
-  debug('updateDog');
-  let dog = new Dog(_dog.id, _dog.name, _dog.breed, _dog.color);
-  return storage.updateItem('dog', dog);
-  // return storage.updateItem('dog', id, body);
+Dog.fetchIDs = function(){
+  debug('fetchIDs');
+  return storage.availableIDs('dog');
 };
