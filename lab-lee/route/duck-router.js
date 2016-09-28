@@ -15,7 +15,7 @@ duckRouter.get('/api/duck/:id', function(req, res, next) {
     .catch (err => next(err));
 });
 
-duckRouter.get('/api/duck/all', function(req, res, next) {
+duckRouter.get('/api/duck', function(req, res, next) {
   Duck.fetchDuckIDs()
   .then( ids => res.json(ids))
   .catch(next);
@@ -32,7 +32,7 @@ duckRouter.post('/api/duck', jsonParser, function(req, res, next) {
 duckRouter.delete('/api/duck/:id', function(req, res, next) {
   debug('hit route DELETE /api/duck');
   Duck.deleteDuck(req.params.id)
-  .then( duck => res.json(duck))
+  .then( () => res.sendStatus(204))
   .catch(err => next(err));
 });
 

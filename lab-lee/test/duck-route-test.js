@@ -142,11 +142,11 @@ describe('testing duck routes', function() {
       .catch(err => done(err));
     });
 
-    it('should get a duck with a valid id, delete it and status 200', done => {
+    it('should get a duck with a valid id, delete it and status 204', done => {
       request.delete(`${url}/api/duck/${this.tempDuck.id}`)
       .end( (err, res) => {
         if (err) return done(err);
-        expect(res.status).to.equal(200);
+        expect(res.status).to.equal(204);
         done();
       });
     });
@@ -160,30 +160,31 @@ describe('testing duck routes', function() {
     });
   });
 
-  // describe('testing GET /api/duck/all', function() {
-  //   let duck;
-  //
-  //   before( done => {
-  //     Duck.createDuck(exampleDuck)
-  //     .then( duck => {
-  //       this.tempDuck = duck;
-  //       done();
-  //     })
-  //     .catch(err => done(err));
-  //   });
-  //
-  //   after( done => {
-  //     Duck.deleteDuck(duck.id)
-  //     .then(() => done())
-  //     .catch(err => done(err));
-  //   });
-  //
-  //   it('should return an array of items from the storage directory', done => {
-  //     request.get(`${url}/api/duck/all`)
-  //     .end( (err, res) => {
-  //       expect(res.status).to.equal()
-  //     })
-  //   })
-  //
-  // });
+  describe('testing GET /api/duck/all', function() {
+
+    before( done => {
+      Duck.createDuck(exampleDuck)
+      .then( duck => {
+        this.tempDuck = duck;
+        done();
+      })
+      .catch(err => done(err));
+    });
+
+    after( done => {
+      Duck.deleteDuck(this.tempDuck.id)
+      .then(() => done())
+      .catch(err => done(err));
+    });
+
+    it('should return an array of items from the storage directory', done => {
+      request.get(`${url}/api/duck`)
+      .end( (err, res) => {
+        console.log(res.body);
+        expect(res.status).to.equal(200);
+        done();
+      });
+    });
+
+  });
 });
