@@ -3,7 +3,7 @@
 //creating the fruit Router
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
-const debug = require('debug')('fruit:fruit-router');
+const debug = require('debug')('fruit:server');
 
 //app modules
 const Fruit = require('../model/fruit.js');
@@ -20,8 +20,8 @@ fruitRouter.post('/api/fruit', jsonParser, function(req, res, next){
 });
 
 //gets a fruit from the server
-fruitRouter.get('/api/fruit:id', function(req, res, next){
-  debug('hit route GET /api/fruit');
+fruitRouter.get('/api/fruit/:id', function(req, res, next){
+  debug('Fruit/:id');
   Fruit.fetchFruit(req.params.id) //using params instead of querystring
   .then( fruit => res.json(fruit))
   .catch( err => next(err));
@@ -34,19 +34,18 @@ fruitRouter.get('/api/fruit', function(req, res, next){
 });
 
 //updates a fruit with a specific id
-fruitRouter.put('/api/fruit', jsonParser, function (req, res, next) {
-  debug('hit route PUT /api/fruit');
-
-  Fruit.updatefruit(req.query.id, req.body)
+fruitRouter.put('/api/fruit/:id', jsonParser, function (req, res, next) {
+  debug('Fruit/:id');
+  Fruit.updateFruit(req.params.id, req.body)
   .then(fruit => res.json(fruit))
   .catch( err => next(err));
 });
 
 //deletes a fruit with a specific id
-fruitRouter.delete('/api/fruit', function (req, res, next) {
-  debug('hit route DELETE /api/fruit');
-  Fruit.deletefruit(req.query.id)
-  .then(fruit => res.json(fruit))
+fruitRouter.delete('/api/fruit/:id', function (req, res, next) {
+  debug('Fruit/:id');
+  Fruit.deleteFruit(req.params.id)
+  .then(() => res.sendStatus(204))
   .catch( err => next(err));
   next();
 });

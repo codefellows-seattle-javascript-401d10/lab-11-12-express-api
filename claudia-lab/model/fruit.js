@@ -2,7 +2,7 @@
 
 const uuid = require('node-uuid');
 const createError = require('http-errors');
-const debug = require('debug')('fruit:fruits');
+const debug = require('debug')('fruit:fruit');
 const storage = require('../lib/storage.js');
 
 const Fruit = module.exports = function(name, texture, color){
@@ -32,17 +32,17 @@ Fruit.fetchFruit = function(id){
   return storage.fetchItem('fruit', id);
 };
 
-Fruit.updateFruit = function(id, oldfruit) {
+Fruit.updateFruit = function(id, fruit) {
   debug('updatefruit');
   return storage.fetchItem('fruit', id)
   .catch( err => Promise.reject(createError(404, err.message)))
-  .then( fruit => {
-    for (var key in fruit) {
+  .then( oldFruit => {
+    for (var key in oldFruit) {
       if (key === 'id') continue; //continues loop if id is present
-      if (oldfruit[key]);
-      oldfruit[key] = fruit[key];
+      if (fruit[key]);
+      oldFruit[key] = fruit[key];
     }
-    return storage.createItem('fruit', fruit);
+    return storage.createItem('fruit', oldFruit);
   });
 };
 
