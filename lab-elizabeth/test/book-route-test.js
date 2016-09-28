@@ -35,21 +35,29 @@ describe('testing book routes', function(){
       });
 
       after(done => {
-        if(this.tempBook){
+        if(this.error){
           Book.deleteBook(this.tempBook.id)
           .then(() => done())
           .catch(err => done(err));
         }
+        done();
       });
 
       it('should delete a book', done => {
         request.delete(`${url}/api/book/${this.tempBook.id}`)
         .end((err, res) => {
-          if(err) return done(err);
+          if(err){
+            this.error = err;
+            return done(err);
+          }
           expect(res.status).to.equal(204);
           done();
         });
       });
+
+    });
+
+    describe('testing DELETE with bad id', function(){
 
       it('should return status 404: not found', done => {
         request.delete(`${url}/api/book/hippocampus`)
@@ -62,6 +70,7 @@ describe('testing book routes', function(){
     });
 
   });
+
 
   describe('testing GET /api/book', function(){
 
@@ -115,18 +124,21 @@ describe('testing book routes', function(){
           Book.deleteBook(this.tempBook.id)
           .then(() => done())
           .catch(err => done(err));
+          return;
         }
+        done();
       });
 
       it('should create a book', done => {
         request.post(`${url}/api/book`)
-        .send(this.tempBook)
+        .send(exampleBook)
         .end((err, res) => {
           if(err) return done(err);
           expect(res.status).to.equal(200);
-          for(var key in this.tempBook){
-            expect(res.body[key].to.equal(this.tempBook[key]));
+          for(var key in exampleBook){
+            expect(res.body[key]).to.equal(exampleBook[key]);
           }
+          this.tempBook = res.body;
           done();
         });
       });
@@ -135,10 +147,17 @@ describe('testing book routes', function(){
 
     describe('with invalid body', function(){
 
+      after(done => {
+        exampleBook.author = 'C.S.Lewis';
+        exampleBook.title = 'The Magicians Nephew';
+        exampleBook.description = 'Something about Narnia';
+        done();
+      });
+
       it('should return status 400: expected author', done => {
-        this.tempBook.author = '';
+        exampleBook.author = '';
         request.post(`${url}/api/book`)
-        .send(this.tempBook)
+        .send(exampleBook)
         .end((err, res) => {
           expect(res.status).to.equal(400);
           done();
@@ -146,9 +165,9 @@ describe('testing book routes', function(){
       });
 
       it('should return status 400: expected title', done => {
-        this.tempBook.title = '';
+        exampleBook.title = '';
         request.post(`${url}/api/book`)
-        .send(this.tempBook)
+        .send(exampleBook)
         .end((err, res) => {
           expect(res.status).to.equal(400);
           done();
@@ -156,9 +175,9 @@ describe('testing book routes', function(){
       });
 
       it('should return status 400: expected description', done => {
-        this.tempBook.description = '';
+        exampleBook.description = '';
         request.post(`${url}/api/book`)
-        .send(this.tempBook)
+        .send(exampleBook)
         .end((err, res) => {
           expect(res.status).to.equal(400);
           done();
@@ -195,7 +214,7 @@ describe('testing book routes', function(){
           if(err) return done(err);
           expect(res.status).to.equal(200);
           for(var key in updateBook){
-            expect(res.body[key].to.equal(updateBook[key]));
+            expect(res.body[key]).to.equal(updateBook[key]);
           }
           done();
         });

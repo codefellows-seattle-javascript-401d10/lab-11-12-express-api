@@ -4,7 +4,7 @@
   "description": "lab-11-12-express-api",
   "main": "server.js",
   "scripts": {
-    "test": "DEBUG='book*' ./node_modules/mocha/bin/mocha"
+    "test": "DEBUG='book*' ./node_modules/mocha/bin/mocha",
     "start": "DEBUG='book*' node server.js"
   },
   "repository": {
