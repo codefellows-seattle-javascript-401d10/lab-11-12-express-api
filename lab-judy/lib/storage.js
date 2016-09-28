@@ -4,7 +4,6 @@ const Promise = require('bluebird');
 const createError = require('http-errors');
 const debug = require('debug')('note:storage');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const del = require('del');
 
 module.exports = exports = {};
 
@@ -44,17 +43,8 @@ exports.fetchItem = function(schemaName, id){
 
 exports.deleteItem = function(schemaName, id){
   debug('deleteItem');
-    //error handling
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
-  if(!id) return Promise.reject (createError(400, 'expected id'));
-
-  return del([`${__dirname}/../data/${schemaName}/${id}.json`])
-  .then ( paths => {
-    try{
-      console.log('file deleted at: \n', paths);
-    } catch (err) {
-      return Promise.reject(createError(500, err.message));
-    }
-  })
-  .catch (err => Promise.reject(createError(404, err.message)));
+  if (!id) return Promise.reject(createError(400, 'expected item'));
+  return fs.unlinkProm(`${__dirname}/../data/${schemaName}/${id}.json`)
+  .catch(err => Promise.reject(createError(404, err.message)));
 };

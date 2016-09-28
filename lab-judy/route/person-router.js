@@ -30,7 +30,7 @@ personRouter.get('/api/person/:id', function(req, res, next){
 personRouter.delete('/api/person/:id', function(req, res, next){
   debug ('hit route DELETE /api/person');
   Person.deletePerson(req.params.id)
-  .then (() => res.status(204).send())
+  .then (() => res.sendStatus(204))
   .catch ( err => next (err));
 });
 
