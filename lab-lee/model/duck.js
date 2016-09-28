@@ -54,10 +54,10 @@ Duck.updateDuck = function(id, _duck) {
   return storage.fetchItem('duck', id)
   .catch( err => Promise.reject(createError(404, err.message)))
   .then( duck => {
-    for (var key in _duck) { // properties on duck in storage
+    for (var key in _duck) { 
       if (key === 'id') continue;
       if (!duck[key]) return Promise.reject(createError(400, 'no duck here'));
-      if (duck[key]) duck[key] = _duck[key]; // if a property on request exists, replace property on dock in storage with property on the request body
+      if (duck[key]) duck[key] = _duck[key]; 
     }
     return storage.createItem('duck', duck);
   });
