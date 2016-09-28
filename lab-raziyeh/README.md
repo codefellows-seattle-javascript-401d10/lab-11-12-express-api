@@ -1,18 +1,27 @@
-# Express-API
+# Express-API -
 =============
-uses express to run POST, GET, PUT and DELETE requests.
-structures :
+using Express, Router-level middleware for GET, POST, PUT, DELETE requests.
+using parameters instead of string query.
 
+This app allows clients to connect to the API and perform the following operations on the /api/book path:
+
+ - GET: takes an ID (e.g. /api/book/:id)
+ - POST: takes a body JSON object with the properties : title, author, page
+ - PUT: takes an ID and body JSON; modifies an existing object with the provided JSON.
+ - DELETE: takes an ID and delete the object corresponding to the ID.
+
+structures :
 - lib
     - storage.js
+    - error-middleware.js
 - model
     - book.js
 - route
     - book-router.js
 - test
-    - person-route-test.js
+    - book-test.js
 - data
-    - schemaName (example:person)
+    - schemaName (example:book)
         - JSON files - created with POST request
 - root
     - server.js
@@ -20,10 +29,10 @@ structures :
     - .gitignore
     - .eslintrc
     - README.md
-    - package.json
 
 ## Getting Started
-- In terminal enter : node server.js
+- In terminal enter : you can in package.json file set the property "start": "DEBUG='book*' node server.js" and in Terminal just type : **npm run start"
+- npm run start
 - also you can run gulp
 - for run tests in terminal enter:
     - gulp  OR
@@ -35,7 +44,7 @@ structures :
 - dependencies:
 
 ```
-npm install --save node-uuid superagent bluebird mkdirp-bluebird del morgan http-errors express debug body-parser
+npm install -S node-uuid superagent bluebird mkdirp-bluebird del body-parser debug express http-errors morgan
 
 ```
 
@@ -47,37 +56,36 @@ npm install -D gulp-eslint gulp-mocha mocha gulp chai
 ```
 
 ## Running
-- In package.json add a new property named "start": "DEBUG='book*' node server.js", to Scripts object.
-- In your root server, type in the command **"npm run start"** in your terminal.
+
+- In your root server, type in the command **"node server.js"** in your terminal.
 - OR in terminal type: gulp
 
 
 - GET request:
-    ```http localhost:3000/api/book?id=selectedId ```
+    ```http localhost:3000/api/book/selectedId ```
 
 - POST request:
-    ```echo '{"title":"yourname", "author":"female/male", "page":"100"}' | http POST localhost:3000/api/book ```
+    ```echo '{"title":"book title", "author":"test", "page":"444"}' | http POST localhost:3000/api/book ```
 
 - PUT request:
-    ```echo '{"id":"1111", "title":"yourname", "author":"female/male", "page":"100"}' | http PUT localhost:3000/api/book ```
+    ```echo '{"title":"book title", "author":"test", "page":"444"}' | http PUT localhost:3000/api/book/selectedId ```
 
 - DELETE request:
-    ```http DELETE localhost:3000/api/book?id=selectedId ```
+    ```http DELETE localhost:3000/api/book/selectedId ```
 
 ## Testing:
+- you can in package.json file set the property "test": "DEBUG='book*' ./node_modules/mocha/bin/mocha" and in Terminal just type : **npm test**
+
 - we have 6 tests for GET and POST requests :
     - test to ensure that  API returns a status code of 404 for routes that have not been registered
-    - tests to ensure that **/api/person** endpoint responds as described for each condition below:
-        - GET - test 404, responds with 'not found' for valid request made with an id that was not found
-        - GET - test 400, responds with 'bad request' if no id was provided in the request
-        - GET - test 200, response body like {<data>} for a request made with a valid id
-        - POST - test 400, responds with 'bad request' for if no body provided or invalid body
-        - POST - test 200, response body like {<data>} for a post request with a valid body
-        - PUT
+    GET - request no longer have 400 test
+    PUT and POST - test 400 for bad json
+    DELETE - test 404, for a DELETE request with an invalid or missing id 404 for missing id because DELETE /api/book/ is not a route
+    DELETE - test 204, with an empty response body for DELETE request with a valid id
 
 ## Built With:
-* Nodejs
-* express
+* Node.js
+* express.js
 * JavaScript
 * Visual studio code 3
 
