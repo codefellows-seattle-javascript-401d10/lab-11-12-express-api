@@ -10,7 +10,7 @@ module.exports = exports = {};
 
 exports.createItem = function(schemaName, item){
   debug('createItem');
-  console.log(item, ' line 13 of storage createdItem');
+
   //error handling
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!item) return Promise.reject(createError(400, 'expected item'));

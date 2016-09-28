@@ -4,6 +4,7 @@ const request = require('superagent');
 const expect = require('chai').expect;
 const Person = require('../model/person.js');
 const url = 'http://localhost:3000';
+const debug = require('debug')('test:person-route-test');
 
 require('../server.js');
 
@@ -17,7 +18,7 @@ describe('testing person routes', function(){
 
   // * `GET` - test 404, responds with 'not found' for valid request made with an id that was not found
     it('should return status 404 for valid request with bad id', function(done){
-      request.get(`${url}/api/person?id=badid`)
+      request.get(`${url}/api/person/badid`)
     .end((err, res) => {
       expect(res.status).to.equal(404);
       done();
@@ -30,13 +31,13 @@ describe('testing person routes', function(){
     it('should return 400 if no id was provided in request', function(done){
       request.get(`${url}/api/person`)
       .end((err, res) => {
-        expect(res.status).to.equal(400);
+        expect(res.status).to.equal(404);
         done();
       });
     });
   });
 
-  describe('testing for request made with valid id', function(){
+  describe('testing GET for request made with valid id', function(){
     // * `GET` - test 200, response body like `{<data>}` for a request made with a valid id
     before(done => {
       Person.createPerson(examplePerson)
@@ -54,7 +55,7 @@ describe('testing person routes', function(){
     });
 
     it('should return 200 for a request with a valid id', done => {
-      request.get(`${url}/api/person?id=${this.tempPerson.id}`)
+      request.get(`${url}/api/person/${this.tempPerson.id}`)
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).to.equal(200);
@@ -67,7 +68,7 @@ describe('testing person routes', function(){
 
 
   // *TODO:  `PUT` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
-  describe('testing if no body provided or invalid body provided', function(){
+  describe('testing PUT if no body provided or invalid body provided', function(){
     before(done => {
       Person.createPerson(examplePerson)
       .then(person => {
@@ -83,7 +84,7 @@ describe('testing person routes', function(){
       .catch(err => done(err));
     });
     it('should return status 400 for no body provided or invalid body provided', done => {
-      request.put(`${url}/api/person?id=${this.tempPerson.id}`)
+      request.put(`${url}/api/person/${this.tempPerson.id}`)
       .set('Content-Type','application/json')
       .send('invalid body')
       .end((err, res) => {
@@ -94,7 +95,7 @@ describe('testing person routes', function(){
   });
 
   // * `PUT` - test 200, response body like  `{<data>}` for a post request with a valid body
-  describe('testing for put request with valid body', function(){
+  describe('testing PUT for put request with valid body', function(){
     before(done => {
       Person.createPerson(examplePerson)
       .then(person => {
@@ -112,7 +113,7 @@ describe('testing person routes', function(){
 
     it('should return 200 for request with valid body', done => {
       let updatedPerson = {name: 'updated', age: '45'};
-      request.put(`${url}/api/person?id=${this.tempPerson.id}`)
+      request.put(`${url}/api/person/${this.tempPerson.id}`)
       .send(updatedPerson)
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -171,15 +172,59 @@ describe('testing person routes', function(){
       .catch(err => done(err));
     });
     it('should return 400 with bad post request for invalid body provided', done =>{
-      request.post(`${url}/api/person?id=${this.tempPerson.id}`)
+      request.post(`${url}/api/person/${this.tempPerson.id}`)
       .set('Content-Type','application/json')
       .send('invalid body')
       .end((err, res) => {
-        expect(res.status).to.equal(400);
+        expect(res.status).to.equal(404);
+        done();
+      });
+    });
+  });
+//TODO: DELETE - test 404, for a DELETE request with an invalid or missing id
+//404 for missing id because DELETE /api/<simple-resource-name>/ is not a route
+  describe('testing DELETE for request with invalid/missing id', function(){
+    before(done => {
+      Person.createPerson(examplePerson)
+      .then(person => {
+        this.tempPerson = person;
+        done();
+      })
+      .catch(err => done(err));
+    });
+
+    it('should return 404', done =>{
+      debug('testing delete test for 404');
+      request.delete(`${url}/api/person/badid`)
+      .end((err, res) => {
+        console.log(res, ' line 201');
+        expect(res.status).to.equal(404);
         done();
       });
     });
   });
 
+  //DELETE test for status 204 for succesful deltion
+  describe('testing DELETE for valid delete with', function(){
+    before(done => {
+      Person.createPerson(examplePerson)
+      .then(person => {
+        this.tempPerson = person;
+        done();
+      })
+      .catch(err => done(err));
+    });
+
+    it('should return 204 for successful deletion', done =>{
+      request.delete(`${url}/api/person/${this.tempPerson.id}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(204);
+        for (var key in res.body){
+          expect(!res.body[key]);
+        }
+        done();
+      });
+    });
+  });
 
 });
