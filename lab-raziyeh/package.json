@@ -1,0 +1,35 @@
+{
+  "name": "lab-raziyeh",
+  "version": "1.0.0",
+  "description": "============= Writing a REST API using Bluebird Promises. structures :",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "DEBUG='book*' node server.js",
+    "test": "DEBUG='book*' ./node_modules/mocha/bin/mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "debug": "^2.2.0",
+    "del": "^2.2.2",
+    "express": "^4.14.0",
+    "http-errors": "^1.5.0",
+    "mkdirp-bluebird": "^1.0.1",
+    "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7",
+    "superagent": "^2.3.0",
+    "uuid": "^2.0.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1"
+  }
+}
