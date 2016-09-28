@@ -3,7 +3,6 @@
 const Promise = require('bluebird');
 const createError = require('http-errors');
 const del = require('del');
-const debug = require('debug')('portfolio:storage');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const mkdirp = Promise.promisifyAll(require('mkdirp-bluebird'));
 

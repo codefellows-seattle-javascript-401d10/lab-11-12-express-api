@@ -2,7 +2,6 @@
 
 const request = require('superagent');
 const expect = require('chai').expect;
-const uuid = require('node-uuid');
 const Portfolio = require('../model/portfolio.js');
 const URL = 'http://localhost:3000';
 
@@ -23,7 +22,7 @@ describe('testing portolio route', function(){
           this.tempPortfolio = portfolio;
           done();
         })
-        .catch(err => done(err))
+        .catch(err => done(err));
       });
       after(done => {
         Portfolio.deletePortfolio(this.tempPortfolio.id)
@@ -138,7 +137,7 @@ describe('testing portolio route', function(){
           this.tempPortfolio = portfolio;
           done();
         })
-        .catch(err => done(err))
+        .catch(err => done(err));
       });
       after(done => {
         Portfolio.deletePortfolio(this.tempPortfolio.id)
