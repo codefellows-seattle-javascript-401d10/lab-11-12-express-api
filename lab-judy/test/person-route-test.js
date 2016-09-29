@@ -49,9 +49,13 @@ describe('testing person routes', function(){
     });
     //clean up the mocked person
     after(done => {
-      Person.deletePerson(this.tempPerson.id)
-      .then(() => done())
-      .catch(err => done(err));
+      if (this.tempPerson){
+        Person.deletePerson(this.tempPerson.id)
+        .then(() => done())
+        .catch(err => done(err));
+        return;
+      }
+      done();
     });
 
     it('should return 200 for a request with a valid id', done => {
@@ -126,7 +130,7 @@ describe('testing person routes', function(){
     });
   });
   // * TODO: `POST` - test 200, response body like  `{<data>}` for a post request with a valid body
-  describe('testing for post request with valid body', function(){
+  describe('testing for POST request with valid body', function(){
     before(done => {
       Person.createPerson(examplePerson)
       .then(person => {
