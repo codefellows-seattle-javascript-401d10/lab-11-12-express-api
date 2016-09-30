@@ -4,8 +4,8 @@
   "description": "![cf](https://i.imgur.com/7v5ASc8.png) lab 11 single resource express api ======",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG='note*' node server.js",
-    "test": "DEBUG='note*' ./node_modules/mocha/bin/mocha"
+    "start": "DEBUG='person*' node server.js",
+    "test": "DEBUG='person*' ./node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -18,23 +18,16 @@
   },
   "homepage": "https://github.com/JudyVue/lab-11-12-express-api#readme",
   "devDependencies": {
-    "bluebird": "^3.4.6",
-    "body-parser": "^1.15.2",
     "chai": "^3.5.0",
-    "debug": "^2.2.0",
     "eslint": "^3.6.0",
-    "express": "^4.14.0",
-    "http-errors": "^1.5.0",
     "mocha": "^3.0.2",
-    "morgan": "^1.7.0",
-    "node-uuid": "^1.4.7"
+
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
     "superagent": "^2.3.0",
     "bluebird": "^3.4.6",
-    "body-parser": "^1.15.2",
-    "chai": "^3.5.0",
+    "body-parser": "^1.15.2",,
     "debug": "^2.2.0",
     "eslint": "^3.6.0",
     "express": "^4.14.0",

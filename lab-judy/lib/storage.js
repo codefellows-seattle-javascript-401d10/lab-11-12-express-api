@@ -2,7 +2,7 @@
 
 const Promise = require('bluebird');
 const createError = require('http-errors');
-const debug = require('debug')('note:storage');
+const debug = require('debug')('person:storage');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 
 module.exports = exports = {};
