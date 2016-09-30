@@ -25,12 +25,6 @@ dogRouter.get('/api/dog/:id', function(req, res, next){
   .catch( err => next(err));
 });
 
-// dogRouter.get('/api/dog', function(req, res, next) {
-//   Dog.fetchIDs()
-//   .then(ids => res.json(ids))
-//   .catch(next);
-// });
-
 dogRouter.put('/api/dog/:id', jsonParser, function(req, res, next){
   debug('IS THIS EVEN BEING REACHED', req.params.id);
   Dog.updateDog(req.params.id, req.body)
