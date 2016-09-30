@@ -19,7 +19,6 @@ describe('testing dog route', function() {
   describe('testing GET requests to /api/dog', function(){
     describe('with a valid id', function(){
       debug('THIS HAS BEEN TESTED AND IS BEING REACHED');
-      //make the temporary dog
       before(done => {
         Dog.createDog(exampleDog)
         .then(dog => {
@@ -29,7 +28,6 @@ describe('testing dog route', function() {
         .catch(err => done(err));
       });
 
-      //delete the temporary dog
       after(done => {
         Dog.deleteDog(this.tempDog.id)
         .then(() => done())
@@ -89,7 +87,7 @@ describe('testing dog route', function() {
     });
 
     describe('with an invalid body', function(){
-      it('should return a 404', done => {
+      it('should return a 400', done => {
         request.post(`${url}/api/dog`)
         .send('asdf')
         .end((err, res) => {
@@ -105,46 +103,29 @@ describe('testing dog route', function() {
       before(done => {
         Dog.createDog(exampleDog)
         .then(dog => {
-          // console.log('wtf is dog', dog);
           this.tempDog = dog;
-          // console.log('wtf is tempDog', this.tempDog);
           done();
         })
         .catch(err => done(err));
       });
 
-      // after(done => {
-      //   if (this.tempDog) {
-      //     Dog.deleteDog(this.tempDog.id)
-      //     .then(() => done())
-      //     .catch(done);
-      //   }
-      // });
-
       it ('should return an updated dog', done => {
-
         let updateData = {name: 'update', breed: 'whatever', color: 'rainbow'};
-
-        debug('url:, `${url}/api/dog/${this.tempDog.id}` THERES GOT TO BE A BETTER WAY ', `${this.tempDog.id}`);
-
-
-
+        debug('${this.tempDog.id}', `${this.tempDog.id}`);
         request.put(`${url}/api/dog/${this.tempDog.id}`)
         .send(updateData)
         .end((err, res) => {
-          debug('it block testing return of updated dog!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', res.body.id);
+          debug('it block testing return of updated dog', res.body.id);
           if (err) return done(err);
+          for (var key in updateData){
+            if (key == 'id') continue;
+            expect(res.body[key]).to.equal(updateData[key]);
+          }
           expect(res.status).to.equal(200);
           expect(res.body.id).to.equal(this.tempDog.id);
-          expect(res.body.name).to.equal(this.tempDog.name);
-          expect(res.body.breed).to.equal(this.tempDog.breed);
-          expect(res.body.color).to.equal(this.tempDog.color);
-          // done();
         });
-
-        done(); //this is when the test fails
+        done();
       });
-
     });
 
     describe('with invalid json', function(){
@@ -157,11 +138,10 @@ describe('testing dog route', function() {
         .catch(err => done(err));
       });
       it('should return a 400 status', done => {
-        let updateData = {};
         request.put(`${url}/api/dog/${this.tempDog.id}`)
-        .send(updateData)
+        .set('Content-Type', 'application/json')
+        .send('hello')
         .end((err, res) => {
-          if (err) return done(err);
           expect(res.status).to.equal(400);
         });
         done();
@@ -172,9 +152,7 @@ describe('testing dog route', function() {
   before(done => {
     Dog.createDog(exampleDog)
     .then(dog => {
-      // console.log('wtf is dog', dog);
       this.tempDog = dog;
-      // console.log('wtf is tempDog', this.tempDog);
       done();
     })
     .catch(err => done(err));
@@ -186,22 +164,18 @@ describe('testing dog route', function() {
       before(done => {
         Dog.createDog(exampleDog)
         .then(dog => {
-          // console.log('wtf is dog', dog);
           this.tempDog = dog;
-          // console.log('wtf is tempDog', this.tempDog);
           done();
         })
         .catch(err => done(err));
       });
 
       it('should return a status of 204', done => {
-        console.log('tempDog.id in it 203 of DELETE', `${this.tempDog.id}`);
         request.delete(`${url}/api/dog/${this.tempDog.id}`)
         .end((err, res) => {
           expect(res.status).to.equal(204);
           done();
         });
-        // done();
       });
     });
 
@@ -213,6 +187,14 @@ describe('testing dog route', function() {
           done();
         })
         .catch(err => done(err));
+      });
+
+      it('should return a status of 404', done => {
+        request.delete(`${url}/api/dog/1234`)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
       });
     });
   });

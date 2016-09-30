@@ -3,7 +3,6 @@
 // npm modules
 const morgan = require('morgan');
 const express = require('express');
-// const createError = require('http-errors');
 const debug = require('debug')('dog:server');
 
 // app modules

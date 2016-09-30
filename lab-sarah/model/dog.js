@@ -15,27 +15,12 @@ const Dog = module.exports = function(name, breed, color) {
   this.name = name;
   this.breed = breed;
   this.color = color;
-  console.log('updated dog name in constructor', this.name);
 };
-
-// const Dog = module.exports = function(dog) {
-//   debug('instantiate dog');
-//   // if (!id) this.id = uuid.v1();
-//   if (!dog.name) throw createError(400, 'expected name');
-//   if (!dog.breed) throw createError(400, 'expected breed');
-//   if (!dog.color) throw createError(400, 'expected color');
-//
-//   this.id = dog.id || uuid.v1();
-//   this.name = name;
-//   this.breed = dog.breed;
-//   this.color = dog.color;
-// };
 
 Dog.createDog = function(_dog) {
   debug('createDog');
   try {
     let dog = new Dog(_dog.name, _dog.breed, _dog.color);
-    // let dog = new Dog(_dog.name, _dog.breed, _dog.color);
     return storage.createItem('dog', dog);
   } catch (err) {
     return Promise.reject(err);
@@ -47,14 +32,9 @@ Dog.fetchDog = function(id){
   return storage.fetchItem('dog', id);
 };
 
-//either something wrong here or in dog-router
-Dog.updateDog = function(_dog){
-  // THIS IS JUST RECEIVING AN ID, NOT A WHOLE DOG ********************************************************************
-  console.log('id in dog-model in Dog.updateDog WHAT IS THE DOGS NAMEEEEEEEEEEEEEEEEEE', _dog);
+Dog.updateDog = function(id, _dog ){
   debug('updateDog');
-  //maybe it's not fetching it?
-  //and fetch item is expecting just an id
-  return storage.fetchItem('dog', _dog.id)
+  return storage.fetchItem('dog', id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(newdog => {
     for (var key in newdog){

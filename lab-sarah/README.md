@@ -1,1 +1,4 @@
-###I'm still having trouble with my update method, so this is a work in progress!
+include a readme with a project description
+  * how to install
+  * how to start the serever
+  * document the routes
