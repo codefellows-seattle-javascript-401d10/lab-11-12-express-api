@@ -1,8 +1,3 @@
-include a readme with a project description
-  * how to install
-  * how to start the serever
-  * document the routes
-
 ## Project description
 
 Creates a RESTful single-resource API with a persistent storage layer. Uses CRUD operations to create, update, and destroy 'Dogs'.
