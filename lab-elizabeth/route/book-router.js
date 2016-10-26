@@ -3,6 +3,7 @@
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
 const debug = require('debug')('book:book-router');
+const createError = require('../lib/error-middleware');
 const Book = require('../model/book');
 
 const bookRouter = new Router();
@@ -37,6 +38,10 @@ bookRouter.post('/api/book', jsonParser, function(req, res, next){
 
 bookRouter.put('/api/book/:id', jsonParser, function(req, res, next){
   debug('running route PUT /api/book');
+  console.log('id', req.params.id);
+  console.log('body', req.body);
+  if(!req.body.author || !req.body.title || !req.body.description) return Promise.reject(createError(400, 'bad request: no content'));
+  if(!req.params.id) return Promise.reject(createError(400, 'bad request: no id'));
 
   Book.updateBook(req.body, req.params.id)
   .then(book => res.json(book))
