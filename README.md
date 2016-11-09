@@ -23,7 +23,7 @@
  * have a default task for running the lint and mocha tasks
 
 # Directions
-* Create these directories to organize your code: 
+* Create these directories to organize your code:
  * lib
  * model
  * route
@@ -32,7 +32,7 @@
 * Create a Object Constructor that creates a _simple resource_ with at least 3 properties
  * it can not have the same properties as the in class sample code
  * An `id` property that is set to a unique **node-uuid** id is required
- * Also include two other properties of your choice (like name, creationDate, etc.) 
+ * Also include two other properties of your choice (like name, creationDate, etc.)
 * use the `body-parser` express middleware to on `POST` and `PUT` routes
 * use the npm `debug` module to log the functions being executed in your app
 * save your data using the storage module with file system persistence from last week
@@ -40,23 +40,23 @@
 ## Server Endpoints
 ### `/api/simple-resource-name`
 * `POST` request
- * pass data as stringifed json in the body of a post request to create a resource
+ * pass data as stringified json in the body of a post request to create a resource
 
 ### `/api/simple-resource-name/?id=`
-* `GET` request 
+* `GET` request
  * pass the id of a resource though the query string to fetch a simple-resource   
 * `PUT` request
- * pass data as stringifed json in the body of a put request to update a resource
+ * pass data as stringified json in the body of a put request to update a resource
 * `DELETE` request
  * pass the id of a resource though the query string to delete a simple-resource   
 
-## Tests 
+## Tests
 * your tests should start your server when they begin and stop your server when they finish
 * write a test to ensure that your api returns a status code of 404 for routes that have not been registered
 * write tests to ensure your `/api/simple-resource-name` endpoint responds as described for each condition below:
  * `GET` - test 404, responds with 'not found' for valid request made with an id that was not found
  * `GET` - test 400, responds with 'bad request' if no id was provided in the request
- * `GET` - test 200, response body like `{<data>}` for a request made with a valid id 
+ * `GET` - test 200, response body like `{<data>}` for a request made with a valid id
  * `PUT` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
  * `PUT` - test 200, response body like  `{<data>}` for a post request with a valid body
  * `POST` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`

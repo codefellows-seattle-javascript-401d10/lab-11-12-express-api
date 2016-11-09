@@ -1,0 +1,40 @@
+{
+  "name": "lab-elizabeth",
+  "version": "1.0.0",
+  "description": "lab-11-12-express-api",
+  "main": "server.js",
+  "scripts": {
+    "test": "DEBUG='book*' ./node_modules/mocha/bin/mocha",
+    "start": "DEBUG='book*' node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tenlia/lab-11-12-express-api.git"
+  },
+  "author": "tenlia@hotmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tenlia/lab-11-12-express-api/issues"
+  },
+  "homepage": "https://github.com/Tenlia/lab-11-12-express-api#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^3.1.2",
+    "mocha-eslint": "^3.0.1"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "debug": "^2.3.0",
+    "del": "^2.2.2",
+    "express": "^4.14.0",
+    "http-errors": "^1.5.0",
+    "mkdirp-bluebird": "^1.0.1",
+    "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7",
+    "superagent": "^2.3.0"
+  }
+}
