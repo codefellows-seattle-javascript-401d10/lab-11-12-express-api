@@ -4,7 +4,7 @@ const createError = require('http-errors');
 const debug = require('debug')('book:error-middleware');
 
 module.exports = function(err, req, res, next){
-  console.error(err.message);
+  console.error(err);
 
   if(err.status){
     debug('user error');

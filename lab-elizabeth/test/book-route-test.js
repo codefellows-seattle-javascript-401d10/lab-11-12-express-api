@@ -196,7 +196,6 @@ describe('testing book routes', function(){
         Book.createBook(exampleBook)
         .then(book => {
           this.tempBook = book;
-          console.log('tempBook.id', this.tempBook.id);
           done();
         })
         .catch(err => done(err));
@@ -229,7 +228,6 @@ describe('testing book routes', function(){
         Book.createBook(exampleBook)
         .then(book => {
           this.tempBook = book;
-          console.log('tempBook.id', this.tempBook.id);
           done();
         })
         .catch(err => done(err));
@@ -250,23 +248,14 @@ describe('testing book routes', function(){
         });
       });
 
-      // it('should return status 400: bad request: no content', done => {
-      //   request.put(`${url}/api/book/${this.tempBook.id}`)
-      //   .send({})
-      //   .end((err, res) => {
-      //     expect(res.status).to.equal(400);
-      //     done();
-      //   });
-      // });
-
-      // it('should return status 400: bad request: no id', done => {
-      //   request.put(`${url}/api/book/`)
-      //   .send(updateBook)
-      //   .end((err, res) => {
-      //     expect(res.status).to.equal(400);
-      //     done();
-      //   });
-      // });
+      it('should return status 400: bad request: no content', done => {
+        request.put(`${url}/api/book/${this.tempBook.id}`)
+        .send({})
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
 
     });
 
