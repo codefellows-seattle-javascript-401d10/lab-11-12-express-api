@@ -257,6 +257,15 @@ describe('testing book routes', function(){
         });
       });
 
+      it('should return status 400: bad request', done => {
+        request.put(`${url}/api/book/${this.tempBook.id}`)
+        .send('just a string')
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+
     });
 
   });
