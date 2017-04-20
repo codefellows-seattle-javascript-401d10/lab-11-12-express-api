@@ -1,0 +1,30 @@
+{
+  "name": "lab-elizabeth",
+  "version": "1.0.0",
+  "description": "lab-11-12-express-api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tenlia/lab-11-12-express-api.git"
+  },
+  "author": "tenlia@hotmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tenlia/lab-11-12-express-api/issues"
+  },
+  "homepage": "https://github.com/Tenlia/lab-11-12-express-api#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.6.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^3.0.2"
+  },
+  "dependencies": {
+    "node-uuid": "^1.4.7"
+  }
+}
